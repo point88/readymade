@@ -1,0 +1,277 @@
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http.response import JsonResponse
+from rest_framework import status
+# Create your views here.
+
+from User.models import User_Account, Freelancer, Client, Company, Test, TestResult, Skill, Certification
+from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize
+from rest_framework.decorators import api_view
+import datetime
+
+def today_string():    
+    return datetime.date.today().strftime("%Y-%m-%d")
+        
+
+@csrf_exempt
+def UserTestApi(request, id=0):
+    if request.method == 'GET':
+        user_data = User_Account.objects.all()
+        user_ser = UserSerialize(user_data, many=True)
+        return JsonResponse(user_ser.data, safe=False)
+    elif request.method == 'POST':
+        user_data = JSONParser().parse(request)
+        user_ser = UserSerialize(data=user_data)
+        if user_ser.is_valid():
+            user_ser.save()
+            return JsonResponse("Added Successfully", safe=False)
+        return JsonResponse("Failed to Add", safe=False)
+    elif request.method == 'PUT':
+        user_data = JSONParser().parse(request)
+        user = User_Account.objects.get(UserId=user_data['UserId'])
+        user_ser = UserSerialize(user, data=user_data)
+        if user_ser.is_valid():
+            user_ser.save()
+            return JsonResponse("Updated Successfully", safe=False)
+        return JsonResponse("Failed to Update", safe=False)
+    elif request.method == 'DELETE':
+        user = User_Account.objects.get(UserId=id)
+        user.delete()
+        return JsonResponse("Deleted Successfully", safe=False)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def UsersApi(request):
+    if request.method == 'POST':
+        user = JSONParser().parse(request)
+        user_serializer = UserSerialize(data=user)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == "GET":
+        user_data = User_Account.objects.all()
+        user_ser = UserSerialize(user_data, many=True)
+        return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
+
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def UserDetailApi(request, pk):
+    
+    try:
+        user = User_Account.objects.get(pk=pk)
+    except:
+        return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        user_serializer = UserSerialize(user)
+        return JsonResponse(user_serializer.data)
+    elif request.method == 'PUT':
+        data = JSONParser().parse(request)
+        user_serializer = UserSerialize(user, data=data)
+        if user_serializer.is_valid(): 
+            user_serializer.save()
+            return JsonResponse(user_serializer.data) 
+        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        user.delete()
+        return JsonResponse({'message': 'User was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def FreelancersApi(request):
+    if request.method == 'POST':
+        freelancer = JSONParser().parse(request)
+        user_serializer = UserSerialize(data=freelancer)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            freelancer['UserId'] = user_serializer.data['id']
+            freelancer['registration_date'] = today_string()
+
+            freelancer_serializer = FreelancerSerialize(data=freelancer)
+        
+            if freelancer_serializer.is_valid():
+                freelancer_serializer.save()
+                return JsonResponse(freelancer_serializer.data, status=status.HTTP_201_CREATED)
+            return JsonResponse(freelancer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(freelancer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == "GET":
+        freelancers = Freelancer.objects.select_related().all()
+        
+        results = []
+        for lancer in freelancers:
+            result = {}
+            result['id'] = lancer.id
+            result['name'] = lancer.UserId.name
+            result['email'] = lancer.UserId.email
+            result['phone'] = lancer.UserId.phone
+            result['registration_date'] = lancer.registration_date
+            result['country'] = lancer.country
+            results.append(result)
+
+        return JsonResponse(results, status=status.HTTP_201_CREATED, safe=False)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def FreelancerDetailApi(request, pk):
+    try:
+        freelancer = Freelancer.objects.get(pk=pk)
+    except:
+        return JsonResponse({'message': 'The freelancer does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == "GET":
+        freelancer_serializer = FreelancerSerialize(freelancer)
+        user = User_Account.objects.get(pk=freelancer_serializer.data['UserId'])
+        
+        user_serializer = UserSerialize(user)
+        result = user_serializer.data
+        result['id'] = freelancer_serializer.data['id']
+        result['registration_date'] = freelancer_serializer.data['registration_date']
+        result['country'] = freelancer_serializer.data['country']
+        result['overview'] = freelancer_serializer.data['overview']
+        return JsonResponse(result)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def ClientsApi(request):
+    if request.method == 'POST':
+        client = JSONParser().parse(request)
+        user_serializer = UserSerialize(data=client)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            client['UserId'] = user_serializer.data['id']
+            client['registration_date'] = today_string()
+
+            client_serializer = ClientSerialize(data=client)
+            
+            if client_serializer.is_valid():
+                client_serializer.save()
+                return JsonResponse(client_serializer.data, status=status.HTTP_201_CREATED)
+            return JsonResponse(client_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(client_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == "GET":
+        clients = Client.objects.select_related().all()
+        
+        results = []
+        for lancer in clients:
+            result = {}
+            result['id'] = lancer.id
+            result['name'] = lancer.UserId.name
+            result['email'] = lancer.UserId.email
+            result['phone'] = lancer.UserId.phone
+            result['registration_date'] = lancer.registration_date
+            result['country'] = lancer.country
+            results.append(result)
+        
+        return JsonResponse(results, status=status.HTTP_200_OK, safe=False)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def ClientDetailApi(request, pk):
+    try:
+        client = Client.objects.get(pk=pk)
+    except:
+        return JsonResponse({'message': 'The client does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == "GET":
+        client_serializer = ClientSerialize(client)
+        user = User_Account.objects.get(pk=client_serializer.data['UserId'])
+        company = Company.objects.get(pk=client_serializer.data['CompanyId'])
+        
+        user_serializer = UserSerialize(user)
+        company_serializer = CompanySerialize(company)
+        result = user_serializer.data
+        result['id'] = client_serializer.data['id']
+        result['company_name'] = company_serializer.data['name']
+        result['company_location'] = company_serializer.data['location']
+        result['registration_date'] = client_serializer.data['registration_date']
+        result['country'] = client_serializer.data['country']
+        return JsonResponse(result)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def CompaniesApi(request):
+    if request.method == 'GET':
+        companies = Company.objects.all()
+        return JsonResponse(companies, status=status.HTTP_200_OK, safe=False)
+    if request.method == 'POST':
+        company = JSONParser().parse(request)
+        company_serializer = CompanySerialize(data=company)
+        if company_serializer.is_valid():
+            company_serializer.save()
+            return JsonResponse(company_serializer.data, status=status.HTTP_201_CREATED)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def CompanyDetailApi(request, pk):
+    if request.method == 'GET':
+        company = Company.objects.get(pk=pk)
+        company_serializer = CompanySerialize(data=company)
+        return JsonResponse(company_serializer.data)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def TestsApi(request):
+    if request.method == 'GET':
+        tests = Test.objects.all()
+        return JsonResponse(tests, status=status.HTTP_200_OK, safe=False)
+    if request.method == 'POST':
+        test = JSONParser().parse(request)
+        test_serializer = TestSerialize(data=test)
+        if test_serializer.is_valid():
+            test_serializer.save()
+            return JsonResponse(test_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(test_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def TestDetailApi(request, pk):
+    if request.method == 'GET':
+        test = Test.objects.get(pk=pk)
+        test_serializer = TestSerialize(data=test)
+        return JsonResponse(test_serializer.data)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def CertificationsApi(request):
+    if request.method == 'GET':
+        certifications = Certification.objects.all()
+        return JsonResponse(certifications, status=status.HTTP_200_OK, safe=False)
+    if request.method == 'POST':
+        certification = JSONParser().parse(request)
+        certification_serializer = CertificationSerialize(data=certification)
+        if certification_serializer.is_valid():
+            certification_serializer.save()
+            return JsonResponse(certification_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(certification_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def CertificationDetailApi(request, pk):
+    if request.method == 'GET':
+        certification = Certification.objects.get(pk=pk)
+        certification_serializer = CertificationSerialize(data=certification)
+        return JsonResponse(certification_serializer.data)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def SkillsApi(request):
+    if request.method == 'GET':
+        skills = Skill.objects.all()
+        return JsonResponse(skills, status=status.HTTP_200_OK, safe=False)
+    if request.method == 'POST':
+        skill = JSONParser().parse(request)
+        skill_serializer = SkillSerialize(data=skill)
+        if skill_serializer.is_valid():
+            skill_serializer.save()
+            return JsonResponse(skill_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def SkillDetailApi(request, pk):
+    if request.method == 'GET':
+        skill = Skill.objects.get(pk=pk)
+        skill_serializer = SkillSerialize(data=skill)
+        return JsonResponse(skill_serializer.data)
