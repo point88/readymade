@@ -15,4 +15,4 @@ Payment/migrations
 Job/migrations
 Proposal/migrations
 Message/migrations
-readyback/settings.py
+#readyback/settings.py
