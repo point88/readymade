@@ -9,7 +9,7 @@ class Message(models.Model):
     message_text = models.TextField()
     ProposalId = models.ForeignKey(
         Proposal,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='proposal_message'
     )
     ClientId = models.ForeignKey(

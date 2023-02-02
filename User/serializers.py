@@ -37,3 +37,13 @@ class SkillSerialize(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = ('id', 'skill_name')
+
+class HasSkillSerialize(serializers.ModelSerializer):
+    class Meta:
+        model = HasSkill
+        fields = ('id', 'FreelancerId', 'SkillId')
+
+class TestResultSerialize(serializers.ModelSerializer):
+    class Meta:
+        model = TestResult
+        fields = ('id', 'FreelancerId', 'TestId', 'start_time', 'end_time', 'result_link', 'score', 'display_on_profile')

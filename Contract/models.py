@@ -13,12 +13,12 @@ class Contract(models.Model):
     budget_amount = models.DecimalField(max_digits=8, decimal_places=2)
     FreelancerId = models.ForeignKey(
         Freelancer,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='freelancer_contract'
     )
     ClientId = models.ForeignKey(
         Client,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='client_contract'
     )
     ProposalId = models.ForeignKey(
@@ -28,11 +28,13 @@ class Contract(models.Model):
     )
     PaymentTypeId = models.ForeignKey(
         Payment_Type,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_DEFAULT,
+        default=0,
         related_name='payment_type_contract'
     )
     PaymentId = models.OneToOneField(
         Payment,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        null=True,
         related_name='payment_contract'
     )

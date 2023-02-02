@@ -9,7 +9,7 @@ class Payment(models.Model):
     work_status = models.CharField(max_length=255, default="")
     recieve_status = models.CharField(max_length=255, default="")
     JobId = models.ForeignKey(
-        Job, 
+        Job,
         on_delete=models.DO_NOTHING,
         related_name='job_payment'
     )

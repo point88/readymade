@@ -96,6 +96,7 @@ class Client(models.Model):
     country = models.CharField(max_length=255)
     CompanyId = models.OneToOneField(
         Company,
-        on_delete = models.CASCADE,
+        on_delete = models.SET_DEFAULT,
+        default = 0,
         related_name='company_client'
     )

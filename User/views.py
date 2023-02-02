@@ -4,8 +4,8 @@ from django.http.response import JsonResponse
 from rest_framework import status
 # Create your views here.
 
-from User.models import User_Account, Freelancer, Client, Company, Test, TestResult, Skill, Certification
-from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize
+from User.models import User_Account, Freelancer, Client, Company, Test, HasSkill, TestResult, Skill, Certification
+from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize
 from rest_framework.decorators import api_view
 import datetime
 
@@ -100,7 +100,7 @@ def FreelancersApi(request):
         freelancers = Freelancer.objects.select_related().all()
         
         results = []
-        for lancer in freelancers:
+        for lancer in freelancers[0:50]:
             result = {}
             result['id'] = lancer.id
             result['name'] = lancer.UserId.name
@@ -154,7 +154,7 @@ def ClientsApi(request):
         clients = Client.objects.select_related().all()
         
         results = []
-        for lancer in clients:
+        for lancer in clients[0:50]:
             result = {}
             result['id'] = lancer.id
             result['name'] = lancer.UserId.name
@@ -275,3 +275,51 @@ def SkillDetailApi(request, pk):
         skill = Skill.objects.get(pk=pk)
         skill_serializer = SkillSerialize(data=skill)
         return JsonResponse(skill_serializer.data)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def HasSkillsApi(request):
+    if request.method == 'POST':
+        has_skill = JSONParser().parse(request)
+        has_skill_serializer = HasSkillSerialize(data=has_skill)
+        if has_skill_serializer.is_valid():
+            has_skill_serializer.save()
+            return JsonResponse(has_skill_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(has_skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET', 'POST'])
+def TestResultsApi(request):
+    if request.method == 'GET':
+        test_results = TestResult.objects.select_related.all()
+
+        results = []
+        for test_result in test_results[0:50]:
+            result = {}
+            result['freelancer_name'] = test_result.FreelancerId.UserId.name
+            result['test_title'] = test_result.TestId.test_name
+            result['result_link'] = test_result.result_link
+            results.append(result)
+        
+        return JsonResponse(results, status=status.HTTP_200_OK, safe=False)
+
+    if request.method == 'POST':
+        test_result = JSONParser().parse(request)
+        test_result_serializer = TestResultSerialize(data=test_result)
+        if test_result_serializer.is_valid():
+            test_result_serializer.save()
+            return JsonResponse(test_result_serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(test_result_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
+def TestResultDetailApi(request, pk):
+    if request.method == 'GET':
+        test_result = TestResult.objects.select_related().get(pk=pk)
+        
+        result = {}
+        result['freelancer_name'] = test_result.FreelancerId.UserId.name
+        result['test_title'] = test_result.TestId.test_name
+        result['result_link'] = test_result.result_link
+        
+        return JsonResponse(result, status=status.HTTP_200_OK, safe=False)

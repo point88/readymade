@@ -20,21 +20,23 @@ class Proposal(models.Model):
     freelancer_comment = models.TextField(default='')
     JobId = models.ForeignKey(
         Job,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='job_proposal'
     )
     FreelancerId = models.ForeignKey(
         Freelancer,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='freelancer_proposal'
     )
     PaymentTypeId = models.ForeignKey(
         Payment_Type,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_DEFAULT,
+        default=0,
         related_name='payment_type_proposal'
     )
     ProposalStatusId = models.ForeignKey(
         Proposal_Status_Catalog,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_DEFAULT,
+        default=0,
         related_name='proposal_status_catalog_proposal'
     )

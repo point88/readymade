@@ -20,17 +20,19 @@ class Job(models.Model):
     
     ClientId = models.ForeignKey(
         Client,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='client_job'
     )
     MainSkillId = models.ForeignKey(
         Skill, 
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_DEFAULT,
+        default=0,
         related_name='skill_job'
     )
     PaymentTypeId = models.ForeignKey(
         'Payment.Payment_Type',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.SET_DEFAULT,
+        default=0,
         related_name='payment_type_job'
     )
 
@@ -38,11 +40,11 @@ class Other_Skills(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     SkillId = models.ForeignKey(
         Skill,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='skill_other_skill'
     )
     JobId = models.ForeignKey(
         Job,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         related_name='job_other_skill'
     )
