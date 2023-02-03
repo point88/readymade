@@ -142,12 +142,12 @@ class TestResultTest(APITestCase):
         # tests for testresult get api
         ## latency of detailed test result
         st = time.time()
-        self.client.get('/api/user/testresult/2')
+        self.client.get('/api/user/testresult/1')
         et = time.time()
         print('CPU Execution time for get test_result:', et - st, 'seconds')
 
         ## latency of test results
         st = time.time()
-        self.client.get('/api/user/testresults')
+        response = self.client.get('/api/user/testresults')
         et = time.time()
         print('CPU Execution time for get test_result:', et - st, 'seconds')

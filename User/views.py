@@ -13,31 +13,6 @@ def today_string():
     return datetime.date.today().strftime("%Y-%m-%d")
         
 
-@csrf_exempt
-def UserTestApi(request, id=0):
-    if request.method == 'GET':
-        user_data = User_Account.objects.all()
-        user_ser = UserSerialize(user_data, many=True)
-        return JsonResponse(user_ser.data, safe=False)
-    elif request.method == 'POST':
-        user_data = JSONParser().parse(request)
-        user_ser = UserSerialize(data=user_data)
-        if user_ser.is_valid():
-            user_ser.save()
-            return JsonResponse("Added Successfully", safe=False)
-        return JsonResponse("Failed to Add", safe=False)
-    elif request.method == 'PUT':
-        user_data = JSONParser().parse(request)
-        user = User_Account.objects.get(UserId=user_data['UserId'])
-        user_ser = UserSerialize(user, data=user_data)
-        if user_ser.is_valid():
-            user_ser.save()
-            return JsonResponse("Updated Successfully", safe=False)
-        return JsonResponse("Failed to Update", safe=False)
-    elif request.method == 'DELETE':
-        user = User_Account.objects.get(UserId=id)
-        user.delete()
-        return JsonResponse("Deleted Successfully", safe=False)
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -206,7 +181,11 @@ def CompaniesApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def CompanyDetailApi(request, pk):
     if request.method == 'GET':
-        company = Company.objects.get(pk=pk)
+        try:
+            company = Company.objects.get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The company does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         company_serializer = CompanySerialize(data=company)
         return JsonResponse(company_serializer.data)
 
@@ -228,7 +207,11 @@ def TestsApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def TestDetailApi(request, pk):
     if request.method == 'GET':
-        test = Test.objects.get(pk=pk)
+        try:
+            test = Test.objects.get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The test does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         test_serializer = TestSerialize(data=test)
         return JsonResponse(test_serializer.data)
 
@@ -250,7 +233,11 @@ def CertificationsApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def CertificationDetailApi(request, pk):
     if request.method == 'GET':
-        certification = Certification.objects.get(pk=pk)
+        try:
+            certification = Certification.objects.get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The certification does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         certification_serializer = CertificationSerialize(data=certification)
         return JsonResponse(certification_serializer.data)
 
@@ -272,7 +259,11 @@ def SkillsApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def SkillDetailApi(request, pk):
     if request.method == 'GET':
-        skill = Skill.objects.get(pk=pk)
+        try:
+            skill = Skill.objects.get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The skill does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
         skill_serializer = SkillSerialize(data=skill)
         return JsonResponse(skill_serializer.data)
 
@@ -291,7 +282,7 @@ def HasSkillsApi(request):
 @api_view(['GET', 'POST'])
 def TestResultsApi(request):
     if request.method == 'GET':
-        test_results = TestResult.objects.select_related.all()
+        test_results = TestResult.objects.select_related().all()
 
         results = []
         for test_result in test_results[0:50]:
@@ -315,10 +306,15 @@ def TestResultsApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def TestResultDetailApi(request, pk):
     if request.method == 'GET':
-        test_result = TestResult.objects.get(pk=pk)
-        result = {}
+        try:
+            test_result = TestResult.objects.get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The testresult does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        test_result_serializer = TestResultSerialize(test_result)
+
+        result = test_result_serializer.data
         result['freelancer_name'] = test_result.FreelancerId.UserId.name
         result['test_title'] = test_result.TestId.test_name
         result['result_link'] = test_result.result_link
         
-        return JsonResponse(result, status=status.HTTP_200_OK, safe=False)
+        return JsonResponse(result, status=status.HTTP_200_OK)
