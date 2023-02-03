@@ -315,8 +315,7 @@ def TestResultsApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def TestResultDetailApi(request, pk):
     if request.method == 'GET':
-        test_result = TestResult.objects.select_related().get(pk=pk)
-        
+        test_result = TestResult.objects.get(pk=pk)
         result = {}
         result['freelancer_name'] = test_result.FreelancerId.UserId.name
         result['test_title'] = test_result.TestId.test_name
