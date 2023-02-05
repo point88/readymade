@@ -47,7 +47,6 @@ def PaymentTypesApi(request):
 
     if request.method == 'POST':
         payment_type = JSONParser().parse(request)
-        print(payment_type)
         payment_type_serializer = Payment_TypeSerialize(data=payment_type)
         if payment_type_serializer.is_valid():
             payment_type_serializer.save()

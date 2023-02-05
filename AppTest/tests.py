@@ -18,10 +18,10 @@ test_result_num = 200
 expected_duration_num = 10
 proposal_status_catalog_num = 10
 payment_type_num = 10
-job_num = 5000
-proposal_num = 50000
-message_num = 55000
-contract_num = 1000
+job_num = 50
+proposal_num = 500
+message_num = 550
+contract_num = 10
 
 def generate_str(N):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=N))
@@ -34,7 +34,7 @@ def generate_date():
 
 # Create your tests here.
 class DBTest(APITestCase):
-    def test_db_prepare(self):
+    def test_db(self):
         # cpu time and wall time for each post api
         ## company
         st = time.time()

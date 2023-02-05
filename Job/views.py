@@ -39,7 +39,10 @@ def JobsApi(request):
 @api_view(['GET', 'PUT', 'DELTE'])
 def JobDetailApi(request, pk):
     if request.method == 'GET':
-        job = Job.models.Job.objects.select_related().get(pk=pk)
+        try:
+            job = Job.models.Job.objects.select_related().get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The Job does not exist'}, status=status.HTTP_404_NOT_FOUND)
         result = {}
         result['id'] = job.id
         result['description'] = job.description
@@ -69,6 +72,9 @@ def ExpectedDurationsApi(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def ExpectedDurationDetailApi(request, pk):
     if request.method == 'GET':
-        expected_duration = Job.models.Expected_Duration.objects.get(pk=pk)
+        try:
+            expected_duration = Job.models.Expected_Duration.objects.get(pk=pk)
+        except:
+            return JsonResponse({'message': 'The Except_Duration does not exist'}, status=status.HTTP_404_NOT_FOUND)
         expected_duration_serializer = ExpectedDurationSerialize(data=expected_duration)
         return JsonResponse(expected_duration_serializer.data, status=status.HTTP_200_OK)
