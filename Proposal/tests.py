@@ -18,3 +18,7 @@ def generate_date():
 
 def generate_time():
     return "00:00:00"
+
+class ProposalTest(APITestCase):
+    def test_proposal_latency(self):
+        return

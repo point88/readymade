@@ -291,7 +291,7 @@ def TestResultsApi(request):
             result['test_title'] = test_result.TestId.test_name
             result['result_link'] = test_result.result_link
             results.append(result)
-        
+
         return JsonResponse(results, status=status.HTTP_200_OK, safe=False)
 
     if request.method == 'POST':

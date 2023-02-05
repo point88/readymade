@@ -2,6 +2,7 @@ db.sqlite3
 .idea
 
 User/__pycache__
+AppTest/__pycache__
 Contract/__pycache__
 Payment/__pycache__
 Job/__pycache__
@@ -10,6 +11,7 @@ Message/__pycache__
 readyback/__pycache__
 
 Contract/migrations
+AppTest/migrations
 User/migrations
 Payment/migrations
 Job/migrations
