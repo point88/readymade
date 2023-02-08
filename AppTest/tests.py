@@ -18,10 +18,10 @@ test_result_num = 200
 expected_duration_num = 10
 proposal_status_catalog_num = 10
 payment_type_num = 10
-job_num = 50
-proposal_num = 500
-message_num = 550
-contract_num = 10
+job_num = 500000
+proposal_num = 5000000
+message_num = 550000
+contract_num = 10000
 
 def generate_str(N):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=N))
@@ -247,7 +247,7 @@ class DBTest(APITestCase):
         response = self.client.get('/api/messages')
         et = time.time()
         print('Execution time for get messages:', et - st, 'seconds')
-
+        
         # cpu time and wall time for each post api
         ## Contract
         st = time.time()
@@ -257,11 +257,11 @@ class DBTest(APITestCase):
 
         for i in range(contract_num):
             self.client.post('/api/contracts', {'start_time':"2022-03-21", 'end_time':"2022-03-29", 'budget_amount':100.0, 'FreelancerId':generate_num(freelancer_num), 'ClientId':generate_num(client_num), 'ProposalId':generate_num(proposal_num), 'PaymentTypeId':generate_num(payment_type_num), 'JobId':generate_num(job_num)}, format='json')
-
+        
         # tests for proposal get api
         ## latency of detailed Contract
         st = time.time()
-        self.client.post('/api/contract/0')
+        self.client.get('/api/contract/0')
         et = time.time()
         print('Execution time for get detailed contract:', et - st, 'seconds')
 

@@ -17,9 +17,13 @@ from rest_framework.decorators import api_view
 def ContractsApi(request):
     if request.method == "POST":
         contract = JSONParser().parse(request)
-        payment = Payment(JobId=Job.objects.get(pk=contract['JobId']))
-        payment.save()
-        contract['PaymentId'] = payment.id
+        try:
+            payment = Payment(JobId=Job.objects.get(pk=contract['JobId']))
+            payment.save()
+            contract['PaymentId'] = payment.id
+        except:
+            print('message', 'The Contract does not exist')
+        
         contract_serializer = ContractSerialize(data=contract)
         if contract_serializer.is_valid():
             contract_serializer.save()
