@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from rest_framework import status
 # Create your views here.
 
-from User.models import User_Account, Freelancer, Client, Company, Test, HasSkill, TestResult, Skill, Certification
+from User.models import User_Account, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification
 from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize
 from rest_framework.decorators import api_view
 import datetime
@@ -282,7 +282,7 @@ def HasSkillsApi(request):
 @api_view(['GET', 'POST'])
 def TestResultsApi(request):
     if request.method == 'GET':
-        test_results = TestResult.objects.select_related().all()
+        test_results = Test_Result.objects.select_related().all()
 
         results = []
         for test_result in test_results[0:50]:
@@ -307,7 +307,7 @@ def TestResultsApi(request):
 def TestResultDetailApi(request, pk):
     if request.method == 'GET':
         try:
-            test_result = TestResult.objects.get(pk=pk)
+            test_result = Test_Result.objects.get(pk=pk)
         except:
             return JsonResponse({'message': 'The testresult does not exist'}, status=status.HTTP_404_NOT_FOUND)
         test_result_serializer = TestResultSerialize(test_result)

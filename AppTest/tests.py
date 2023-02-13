@@ -6,8 +6,8 @@ import random
 import time
 
 company_num = 200
-freelancer_num = 1000
-client_num = 1000
+freelancer_num = 100
+client_num = 100
 skill_num = 100
 certification_num = 100
 test_num = 200
@@ -18,10 +18,10 @@ test_result_num = 200
 expected_duration_num = 10
 proposal_status_catalog_num = 10
 payment_type_num = 10
-job_num = 500000
-proposal_num = 5000000
-message_num = 550000
-contract_num = 10000
+job_num = 500
+proposal_num = 500
+message_num = 550
+contract_num = 10
 
 def generate_str(N):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=N))

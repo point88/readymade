@@ -43,7 +43,7 @@ class Test(models.Model):
     test_name = models.CharField(max_length=128)
     test_link = models.TextField(default="")
 
-class TestResult(models.Model):
+class Test_Result(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     FreelancerId = models.ForeignKey(
         Freelancer,
@@ -66,7 +66,7 @@ class Skill(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     skill_name = models.CharField(max_length=128)
 
-class HasSkill(models.Model):
+class Has_Skill(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     FreelancerId = models.ForeignKey(
         Freelancer,

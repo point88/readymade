@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from User.models import User_Account, Freelancer, Certification, Test, TestResult, HasSkill, Company, Client, Skill
+from User.models import User_Account, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill
 
 
 class UserSerialize(serializers.ModelSerializer):
@@ -40,10 +40,10 @@ class SkillSerialize(serializers.ModelSerializer):
 
 class HasSkillSerialize(serializers.ModelSerializer):
     class Meta:
-        model = HasSkill
+        model = Has_Skill
         fields = ('id', 'FreelancerId', 'SkillId')
 
 class TestResultSerialize(serializers.ModelSerializer):
     class Meta:
-        model = TestResult
+        model = Test_Result
         fields = ('id', 'FreelancerId', 'TestId', 'start_time', 'end_time', 'result_link', 'score', 'display_on_profile')
