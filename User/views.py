@@ -11,7 +11,7 @@ import datetime
 
 def today_string():    
     return datetime.date.today().strftime("%Y-%m-%d")
-        
+
 
 
 @csrf_exempt
