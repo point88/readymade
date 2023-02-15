@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -66,7 +66,7 @@ ROOT_URLCONF = 'readyback.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'ReadyFront', 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,11 +86,15 @@ WSGI_APPLICATION = 'readyback.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'readymade',
-        'HOST': '127.0.0.1',
-        'PORT': 27017,
+    "default": {
+        "ENGINE": "djongo",
+        "NAME": os.environ.get('MONGO_DB_NAME'),
+        "CLIENT": {
+            "host": os.environ.get('MONGO_DB_HOST'),
+            "port": int(os.environ.get('MONGO_DB_PORT')),
+            "username": os.environ.get('MONGO_DB_USERNAME'),
+            "password": os.environ.get('MONGO_DB_PASSWORD'),
+        },
     }
 }
 
@@ -113,6 +117,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_IGNORE_RESULT = True
+CELERY_BROKER_URL = os.environ.get('CELERY_URL')
+CELERYD_HIJACK_ROOT_LOGGER = False
+REDIS_CHANNEL_URL = os.environ.get('REDIS_CHANNEL_URL')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -130,6 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ReadyFront', 'build', 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
