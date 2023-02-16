@@ -51,8 +51,13 @@ services:
     container_name: app
     restart: always
     command: >
-        sh -c "python manage.py makemigrations &&
-               python manage.py migrate &&
+        sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
+               python manage.py migrate User&&
+               python manage.py migrate Contract&&
+               python manage.py migrate Job&&
+               python manage.py migrate Message&&
+               python manage.py migrate Payment&&
+               python manage.py migrate Proposal&&
                python manage.py runserver 0.0.0.0:8000"
     env_file: .env
 

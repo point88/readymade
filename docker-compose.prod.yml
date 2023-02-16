@@ -2,11 +2,9 @@ version: '1.0'
 
 # THESE OVERRIDES ARE FOR PRODUCTION! DON'T USE THIS IN DEVELOPMENT!
 services:
-  django:
+  app:
     networks:
       - hosting_network
-    volumes:
-      - ./_app:/usr/src/app
       # Enable this if you decide to use the `caddy` service
       # - static_files_volume:/usr/src/app/static
     environment:
