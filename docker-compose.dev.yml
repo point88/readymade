@@ -1,0 +1,16 @@
+version: '1.0'
+
+# THESE OVERRIDES ARE FOR DEVELOPMENT! DON'T USE THIS IN PRODUCTION!
+services:
+  mongo:
+    ports:
+      # Allow us to directly access the database during development
+      - "27017:27017"
+
+  app:
+    # Automatically reload Gunicorn when a file changes
+    environment:
+      - DEBUG=true
+  celery:
+    environment:
+      - DEBUG=True
