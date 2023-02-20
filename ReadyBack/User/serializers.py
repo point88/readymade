@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from User.models import User_Account, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill
+from User.models import User, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill
 
 
 class UserSerialize(serializers.ModelSerializer):
     class Meta:
-        model = User_Account
+        model = User
         fields = ('id', 'name', 'email', 'password', 'phone', 'firstname', 'secondname', 'verified', 'rating', 'role')
 
 

@@ -1,24 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 # Create your models here.
 
-class User_Account(models.Model):
+class User(AbstractUser):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False)
-    name = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
     phone = models.CharField(max_length=20)
-    firstname = models.CharField(max_length=128)
-    secondname = models.CharField(max_length=128)
-    verified = models.BooleanField(default=False)
     rating = models.SmallIntegerField(default=0)
-    role = models.SmallIntegerField(default=1)
+    pass
 
 class Freelancer(models.Model):
     id = models.BigAutoField(auto_created=True,primary_key=True)
     UserId = models.OneToOneField(
-        User_Account,
+        User,
         on_delete = models.CASCADE,
         related_name='user_freelancer',
     )
@@ -88,7 +83,7 @@ class Company(models.Model):
 class Client(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     UserId = models.OneToOneField(
-        User_Account,
+        User,
         on_delete = models.CASCADE,
         related_name='user_client',
     )

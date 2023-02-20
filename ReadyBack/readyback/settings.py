@@ -34,12 +34,13 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    #'django.contrib.sessions',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djongo',
     'rest_framework',
     'corsheaders',
+    'oauth2_provider',
     'User.apps.UserConfig',
     'Job.apps.JobConfig',
     'Payment.apps.PaymentConfig',
@@ -153,3 +154,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
+
+AUTH_USER_MODEL='User.User'
+
+LOGIN_URL='/admin/login/'
+
+AUTHENTICATION_BACKENDS=[
+    
+    'django.contrib.auth.backends.RemoteUserBackend',
+    'django.contrib.auth.backends.ModelBackend'
+
+]

@@ -21,6 +21,7 @@ from django.urls import include, re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     re_path(r'^', include('User.urls')),
     re_path(r'^', include('Contract.urls')),
     re_path(r'^', include('Proposal.urls')),

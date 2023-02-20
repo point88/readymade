@@ -4,7 +4,7 @@ from django.http.response import JsonResponse
 from rest_framework import status
 # Create your views here.
 
-from User.models import User_Account, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification
+from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification
 from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize
 from rest_framework.decorators import api_view
 import datetime
@@ -25,7 +25,7 @@ def UsersApi(request):
             return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == "GET":
-        user_data = User_Account.objects.all()
+        user_data = User.objects.all()
         user_ser = UserSerialize(user_data, many=True)
         return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
@@ -35,7 +35,7 @@ def UsersApi(request):
 def UserDetailApi(request, pk):
     
     try:
-        user = User_Account.objects.get(pk=pk)
+        user = User.objects.get(pk=pk)
     except:
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
     
@@ -97,7 +97,7 @@ def FreelancerDetailApi(request, pk):
     
     if request.method == "GET":
         freelancer_serializer = FreelancerSerialize(freelancer)
-        user = User_Account.objects.get(pk=freelancer_serializer.data['UserId'])
+        user = User.objects.get(pk=freelancer_serializer.data['UserId'])
         
         user_serializer = UserSerialize(user)
         result = user_serializer.data
@@ -151,7 +151,7 @@ def ClientDetailApi(request, pk):
     
     if request.method == "GET":
         client_serializer = ClientSerialize(client)
-        user = User_Account.objects.get(pk=client_serializer.data['UserId'])
+        user = User.objects.get(pk=client_serializer.data['UserId'])
         company = Company.objects.get(pk=client_serializer.data['CompanyId'])
         
         user_serializer = UserSerialize(user)
