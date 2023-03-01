@@ -20,7 +20,6 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres
     restart: always
     env_file: .env
     environment:
@@ -28,11 +27,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT}
-    ports:
-      - 5432:5432
     volumes:
-      - ${PWD}/_data/postgres:/var/lib/postgresql/data
-      - ${PWD}/docker/_postgres/scripts/create_test_db.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+      - /var/lib/postgresql/data
 
   redis:
     image: redis
@@ -43,7 +39,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - ${PWD}/_data/redis:/var/lib/redis
+      - /var/lib/redis
 
   app:
     build: .
@@ -51,7 +47,7 @@ services:
     container_name: app
     restart: always
     command: >
-        sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal oauth2_provider &&
+        sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
                python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
                python manage.py runserver 0.0.0.0:8000"

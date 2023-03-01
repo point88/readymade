@@ -2,13 +2,18 @@ version: '1.0'
 
 # THESE OVERRIDES ARE FOR DEVELOPMENT! DON'T USE THIS IN PRODUCTION!
 services:
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
   mongo:
     ports:
       # Allow us to directly access the database during development
       - "27017:27017"
 
   app:
-    # Automatically reload Gunicorn when a file changes
+    volumes:
+      - ./ReadyBack:/app
     environment:
       - DEBUG=true
   celery:

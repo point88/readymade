@@ -2,8 +2,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
-import datetime
 
 from Payment.models import Payment, Payment_Type
 from Payment.serializers import PaymentSerialize, Payment_TypeSerialize
@@ -12,6 +12,7 @@ from Payment.serializers import PaymentSerialize, Payment_TypeSerialize
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def PaymentsApi(request):
+    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payments = Payment.objects.select_related().all()
         
@@ -32,6 +33,7 @@ def PaymentsApi(request):
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def PaymentDetailApi(request, pk):
+    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment = Payment.objects.get(pk=pk)
         payment_serializer = PaymentSerialize(data=payment)
@@ -40,6 +42,7 @@ def PaymentDetailApi(request, pk):
 @csrf_exempt
 @api_view(['GET', 'POST'])
 def PaymentTypesApi(request):
+    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment_types = Payment_Type.objects.all()
         payment_types_serializer = Payment_TypeSerialize(data=payment_types)
@@ -56,6 +59,7 @@ def PaymentTypesApi(request):
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def PaymentTypeDetailApi(request, pk):
+    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment_type = Payment_Type.objects.get(pk=pk)
         payment_type_serializer = Payment_TypeSerialize(data=payment_type)

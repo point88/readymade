@@ -37,17 +37,33 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'djongo',
+    
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.apple',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
     'corsheaders',
-    'oauth2_provider',
     'User.apps.UserConfig',
     'Job.apps.JobConfig',
     'Payment.apps.PaymentConfig',
     'Proposal.apps.ProposalConfig',
     'Message.apps.MessageConfig',
     'Contract.apps.ContractConfig',
+
+    'rest_framework_swagger',
 ]
+
+SITE_ID = 1
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -87,7 +103,15 @@ WSGI_APPLICATION = 'readyback.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
+    },
+    "mongo": {
         "ENGINE": "djongo",
         "NAME": os.environ.get('MONGO_DB_NAME'),
         "CLIENT": {
@@ -149,19 +173,44 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ReadyFront', 'build', 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    ),   
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 AUTH_USER_MODEL='User.User'
 
-LOGIN_URL='/admin/login/'
-
 AUTHENTICATION_BACKENDS=[
-    
-    'django.contrib.auth.backends.RemoteUserBackend',
-    'django.contrib.auth.backends.ModelBackend'
-
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
 ]
+
+REST_AUTH = {
+    'SESSION_LOGIN': True,
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'readymade',
+    'JWT_AUTH_REFRESH_COOKIE': 'readymade-refresh-token',
+    'JWT_AUTH_HTTPONLY': False,
+}
+
+EMAIL_BACKEND                           = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST                              = 'mail.arkanpro.com'
+EMAIL_USE_TLS                           = True
+EMAIL_PORT                              = 587
+EMAIL_HOST_USER                         = 'ferreol@arkanpro.com'
+EMAIL_HOST_PASSWORD                     = 'd-LOalOf.9eX'
+DEFAULT_FROM_EMAIL                      = 'ferreol@arkanpro.com'
+
+ACCOUNT_LOGOUT_REDIRECT_URL             ='/accounts/login/'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS  = 1
+ACCOUNT_EMAIL_REQUIRED                  = True
+ACCOUNT_EMAIL_VERIFICATION              = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT            = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT          = 86400
+ACCOUNT_CONFIRM_EMAIL_ON_GET            = True

@@ -23,11 +23,10 @@ ARG DJANGO_SECRET_KEY
 RUN mkdir -p /app
 RUN mkdir -p /app/ReadyFront
 
-COPY ./ReadyBack /app
+ADD ./ReadyBack /app
 COPY ./ReadyFront /app/ReadyFront
-COPY requirements.txt /app
+ADD requirements.txt /app
 
 WORKDIR /app
 
 RUN pip install -r requirements.txt
-#RUN python manage.py runserver 0.0.0.0:8000

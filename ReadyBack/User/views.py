@@ -9,10 +9,28 @@ from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize
 from rest_framework.decorators import api_view
 import datetime
 
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from allauth.socialaccount.providers.apple.views import AppleOAuth2Adapter
+from allauth.socialaccount.providers.apple.client import AppleOAuth2Client
+
 def today_string():    
     return datetime.date.today().strftime("%Y-%m-%d")
 
+class FacebookLogin(SocialLoginView):
+    adapter_class = FacebookOAuth2Adapter
 
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = "https://www.google.com/"
+    client_class = OAuth2Client
+
+class AppleLogin(SocialLoginView):
+    adapter_class = AppleOAuth2Adapter
+    callback_url = "https://www.google.com/"
+    client_class = AppleOAuth2Client
 
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -24,6 +42,7 @@ def UsersApi(request):
             user_serializer.save()
             return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
     if request.method == "GET":
         user_data = User.objects.all()
         user_ser = UserSerialize(user_data, many=True)
