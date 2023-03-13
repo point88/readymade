@@ -7,6 +7,9 @@ from rest_framework_simplejwt.views import TokenVerifyView
 from dj_rest_auth.jwt_auth import get_refresh_view
 
 urlpatterns=[
+    path('send-sms/', views.SendOrResendSMSAPI.as_view(), name='send_resend_sms'),
+    path('verify-phone/', views.VerifyPhoneNumberAPI.as_view(), name='verify_phone_number'),
+
     path('account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
     path('register/', RegisterView.as_view()),
     path('login/', LoginView.as_view()),

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*i=!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.66.216.85']
+ALLOWED_HOSTS = ['18.185.108.243']
 
 
 # Application definition
@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+
+    'phonenumber_field',
 
     'allauth',
     'allauth.account',
@@ -214,3 +216,10 @@ ACCOUNT_EMAIL_VERIFICATION              = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT            = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT          = 86400
 ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
+
+TOKEN_EXPIRE_MINUTES = 3
+TOKEN_LENGTH = 6
+
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')

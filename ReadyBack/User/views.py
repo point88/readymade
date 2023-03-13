@@ -2,11 +2,12 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework import status
-# Create your views here.
+from rest_framework.response import Response
 
-from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification
-from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize
+from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification, PhoneNumber
+from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer
 from rest_framework.decorators import api_view
+from rest_framework.generics import GenericAPIView
 import datetime
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
@@ -18,6 +19,32 @@ from allauth.socialaccount.providers.apple.client import AppleOAuth2Client
 
 def today_string():    
     return datetime.date.today().strftime("%Y-%m-%d")
+
+class SendOrResendSMSAPI(GenericAPIView):
+    serializer_class = PhoneNumberSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            phone_number = str(serializer.validated_data['phone_number'])
+
+            user = User.objects.filter(phone__phone_number=phone_number).first()
+            sms_verification = PhoneNumber.objects.filter(user=user, is_verified=False).first()
+            sms_verification.send_confirmation()
+            return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class VerifyPhoneNumberAPI(GenericAPIView):
+    serializer_class = VerifyPhoneNumberSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            message = {'detail': _('Phone number successfully verified')}
+            return Response(message, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
