@@ -10,7 +10,12 @@ class Expected_Duration(models.Model):
 
 class Job(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
+    title = models.CharField(max_length=255, default="")
     description = models.TextField()
+    is_contest = models.BooleanField(default=False)
+    is_hourly = models.BooleanField(default=False)
+    is_recruiter_project = models.BooleanField(default=False)
+    currency_type = models.CharField(max_length=3, default="USD")
     payment_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     ExpectedDurationId = models.ForeignKey(
         Expected_Duration,
@@ -48,3 +53,12 @@ class Other_Skills(models.Model):
         on_delete=models.CASCADE,
         related_name='job_other_skill'
     )
+    
+class Job_Attachment(models.Model):
+    id  = models.BigAutoField(auto_created=True, primary_key=True)
+    JobId = models.ForeignKey(
+        Job,
+        on_delete=models.CASCADE,
+        related_name='job_job_attachement'
+    )
+    attachment_link = models.CharField(max_length=255, default="")
