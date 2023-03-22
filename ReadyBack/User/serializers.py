@@ -12,8 +12,12 @@ from User.exceptions import (AccountNotRegisteredException,
 class UserSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'name', 'email', 'password', 'phone', 'firstname', 'secondname', 'verified', 'rating', 'role')
+        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'rating')
 
+class UserNameSerialize(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name')
 
 class FreelancerSerialize(serializers.ModelSerializer):
     class Meta:

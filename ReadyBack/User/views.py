@@ -1,11 +1,11 @@
-from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 
 from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification, PhoneNumber
-from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer
+from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserNameSerialize
 from rest_framework.decorators import api_view
 from rest_framework.generics import GenericAPIView
 import datetime
@@ -59,7 +59,6 @@ class AppleLogin(SocialLoginView):
     callback_url = "https://www.google.com/"
     client_class = AppleOAuth2Client
 
-@csrf_exempt
 @api_view(['GET', 'POST'])
 def UsersApi(request):
     if request.method == 'POST':
@@ -76,7 +75,6 @@ def UsersApi(request):
         return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
 
-@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def UserDetailApi(request, pk):
     
@@ -89,9 +87,10 @@ def UserDetailApi(request, pk):
         user_serializer = UserSerialize(user)
         return JsonResponse(user_serializer.data)
     elif request.method == 'PUT':
+        
         data = JSONParser().parse(request)
-        user_serializer = UserSerialize(user, data=data)
-        if user_serializer.is_valid(): 
+        user_serializer = UserNameSerialize(user, data=data)
+        if user_serializer.is_valid():
             user_serializer.save()
             return JsonResponse(user_serializer.data) 
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -99,7 +98,7 @@ def UserDetailApi(request, pk):
         user.delete()
         return JsonResponse({'message': 'User was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def FreelancersApi(request):
     if request.method == 'POST':
@@ -133,7 +132,7 @@ def FreelancersApi(request):
 
         return JsonResponse(results, status=status.HTTP_201_CREATED, safe=False)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def FreelancerDetailApi(request, pk):
     try:
@@ -153,7 +152,7 @@ def FreelancerDetailApi(request, pk):
         result['overview'] = freelancer_serializer.data['overview']
         return JsonResponse(result)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def ClientsApi(request):
     if request.method == 'POST':
@@ -187,7 +186,7 @@ def ClientsApi(request):
         
         return JsonResponse(results, status=status.HTTP_200_OK, safe=False)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def ClientDetailApi(request, pk):
     try:
@@ -210,7 +209,7 @@ def ClientDetailApi(request, pk):
         result['country'] = client_serializer.data['country']
         return JsonResponse(result)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def CompaniesApi(request):
     if request.method == 'GET':
@@ -223,7 +222,7 @@ def CompaniesApi(request):
             company_serializer.save()
             return JsonResponse(company_serializer.data, status=status.HTTP_201_CREATED)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def CompanyDetailApi(request, pk):
     if request.method == 'GET':
@@ -235,7 +234,7 @@ def CompanyDetailApi(request, pk):
         company_serializer = CompanySerialize(data=company)
         return JsonResponse(company_serializer.data)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def TestsApi(request):
     if request.method == 'GET':
@@ -249,7 +248,7 @@ def TestsApi(request):
             return JsonResponse(test_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(test_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def TestDetailApi(request, pk):
     if request.method == 'GET':
@@ -261,7 +260,7 @@ def TestDetailApi(request, pk):
         test_serializer = TestSerialize(data=test)
         return JsonResponse(test_serializer.data)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def CertificationsApi(request):
     if request.method == 'GET':
@@ -275,7 +274,7 @@ def CertificationsApi(request):
             return JsonResponse(certification_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(certification_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def CertificationDetailApi(request, pk):
     if request.method == 'GET':
@@ -287,7 +286,7 @@ def CertificationDetailApi(request, pk):
         certification_serializer = CertificationSerialize(data=certification)
         return JsonResponse(certification_serializer.data)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def SkillsApi(request):
     if request.method == 'GET':
@@ -301,7 +300,7 @@ def SkillsApi(request):
             return JsonResponse(skill_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def SkillDetailApi(request, pk):
     if request.method == 'GET':
@@ -313,7 +312,7 @@ def SkillDetailApi(request, pk):
         skill_serializer = SkillSerialize(data=skill)
         return JsonResponse(skill_serializer.data)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def HasSkillsApi(request):
     if request.method == 'POST':
@@ -324,7 +323,7 @@ def HasSkillsApi(request):
             return JsonResponse(has_skill_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(has_skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+
 @api_view(['GET', 'POST'])
 def TestResultsApi(request):
     if request.method == 'GET':
@@ -348,7 +347,7 @@ def TestResultsApi(request):
             return JsonResponse(test_result_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(test_result_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def TestResultDetailApi(request, pk):
     if request.method == 'GET':

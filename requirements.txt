@@ -6,8 +6,7 @@ djongo @ git+https://github.com/doableware/djongo@master
 dnspython==2.3.0
 django-cors-headers==3.13.0
 django-allauth
-dj-rest-auth @ git+https://github.com/iMerica/dj-rest-auth.git@master
-django-rest-authemail
+dj-rest-auth @ git+https://github.com/point88/dj-rest-auth.git@master
 six
 django-rest-swagger
 celery

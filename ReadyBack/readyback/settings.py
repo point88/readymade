@@ -176,7 +176,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ),   
@@ -216,6 +216,8 @@ ACCOUNT_EMAIL_VERIFICATION              = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT            = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT          = 86400
 ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
+ACCOUNT_AUTHENTICATION_METHOD           = 'email'
+ACCOUNT_USERNAME_REQUIRED               = False
 
 TOKEN_EXPIRE_MINUTES = 3
 TOKEN_LENGTH = 6
