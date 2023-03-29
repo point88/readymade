@@ -27,12 +27,11 @@ RUN mkdir -p /app
 ADD ./ReadyBack /app
 ADD requirements.txt /app
 
-RUN git clone -b my-branch git@github.com:HSoul0812/readymade-frontend.git
 ADD ./readymade-frontend /app
 
 WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-#RUN npm install
-#CMD ["npm", "start"]
+RUN npm install
+CMD ["npm", "start"]
