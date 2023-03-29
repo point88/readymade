@@ -4,8 +4,8 @@ from django.http.response import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 
-from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification, PhoneNumber
-from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserNameSerialize
+from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification, PhoneNumber, Category
+from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize
 from rest_framework.decorators import api_view
 from rest_framework.generics import GenericAPIView
 import datetime
@@ -51,12 +51,12 @@ class FacebookLogin(SocialLoginView):
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = "https://www.google.com/"
+    callback_url = "http://18.185.108.243:8000/dashboard/"
     client_class = OAuth2Client
 
 class AppleLogin(SocialLoginView):
     adapter_class = AppleOAuth2Adapter
-    callback_url = "https://www.google.com/"
+    callback_url = "http://18.185.108.243:8000/dashboard/"
     client_class = AppleOAuth2Client
 
 @api_view(['GET', 'POST'])
@@ -89,7 +89,19 @@ def UserDetailApi(request, pk):
     elif request.method == 'PUT':
         
         data = JSONParser().parse(request)
-        user_serializer = UserNameSerialize(user, data=data)
+        if 'account_type' in data:
+            data['registration_date'] = today_string()
+            if data['account_type'] == 0:
+                freelancer_serializer = FreelancerSerialize(data=data)
+                if freelancer_serializer.is_valid():
+                    freelancer_serializer.save()
+            else:
+                client_serializer = ClientSerialize(data=data)
+                if client_serializer.is_valid():
+                    client_serializer.save()
+
+        user_serializer = UserProfileSerialize(user, data=data)
+
         if user_serializer.is_valid():
             user_serializer.save()
             return JsonResponse(user_serializer.data) 
@@ -103,18 +115,11 @@ def UserDetailApi(request, pk):
 def FreelancersApi(request):
     if request.method == 'POST':
         freelancer = JSONParser().parse(request)
-        user_serializer = UserSerialize(data=freelancer)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            freelancer['UserId'] = user_serializer.data['id']
-            freelancer['registration_date'] = today_string()
-
-            freelancer_serializer = FreelancerSerialize(data=freelancer)
-        
-            if freelancer_serializer.is_valid():
-                freelancer_serializer.save()
-                return JsonResponse(freelancer_serializer.data, status=status.HTTP_201_CREATED)
-            return JsonResponse(freelancer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        freelancer['registration_date'] = today_string()
+        freelancer_serializer = FreelancerSerialize(data=freelancer)
+        if freelancer_serializer.is_valid():
+            freelancer_serializer.save()
+            return JsonResponse(freelancer_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(freelancer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == "GET":
         freelancers = Freelancer.objects.select_related().all()
@@ -152,23 +157,22 @@ def FreelancerDetailApi(request, pk):
         result['overview'] = freelancer_serializer.data['overview']
         return JsonResponse(result)
 
+@api_view(['GET'])
+def CategoryApi(request):
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        category_ser = CategorySerialize(categories, many=True)
+        return JsonResponse(category_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
 @api_view(['GET', 'POST'])
 def ClientsApi(request):
     if request.method == 'POST':
         client = JSONParser().parse(request)
-        user_serializer = UserSerialize(data=client)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            client['UserId'] = user_serializer.data['id']
-            client['registration_date'] = today_string()
-
-            client_serializer = ClientSerialize(data=client)
-            
-            if client_serializer.is_valid():
-                client_serializer.save()
-                return JsonResponse(client_serializer.data, status=status.HTTP_201_CREATED)
-            return JsonResponse(client_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        client['registration_date'] = today_string()
+        client_serializer = ClientSerialize(data=client)
+        if client_serializer.is_valid():
+            client_serializer.save()
+            return JsonResponse(client_serializer.data, status=status.HTTP_201_CREATED) 
         return JsonResponse(client_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     if request.method == "GET":
         clients = Client.objects.select_related().all()
@@ -301,27 +305,24 @@ def SkillsApi(request):
         return JsonResponse(skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
 def SkillDetailApi(request, pk):
     if request.method == 'GET':
-        try:
-            skill = Skill.objects.get(pk=pk)
-        except:
-            return JsonResponse({'message': 'The skill does not exist'}, status=status.HTTP_404_NOT_FOUND)
-
-        skill_serializer = SkillSerialize(data=skill)
-        return JsonResponse(skill_serializer.data)
-
+        
+        skills = Skill.objects.filter(CategoryId=pk).all()
+        user_ser = SkillSerialize(skills, many=True)
+        return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
+        
 
 @api_view(['GET', 'POST'])
 def HasSkillsApi(request):
     if request.method == 'POST':
         has_skill = JSONParser().parse(request)
-        has_skill_serializer = HasSkillSerialize(data=has_skill)
-        if has_skill_serializer.is_valid():
-            has_skill_serializer.save()
-            return JsonResponse(has_skill_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(has_skill_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        for skill in has_skill['skills']:
+            has_skill_serializer = HasSkillSerialize(data=skill)
+            if has_skill_serializer.is_valid():
+                has_skill_serializer.save()
+        return JsonResponse(has_skill_serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET', 'POST'])

@@ -16,17 +16,25 @@ RUN apt-get update \
     libc-dev \
     bash \
     git \
+    nodejs \
+    npm \
     && pip3 install --upgrade pip
 
 ARG DJANGO_SECRET_KEY
 
 RUN mkdir -p /app
-RUN mkdir -p /app/ReadyFront
+#RUN mkdir -p /app/ReadyFront
 
 ADD ./ReadyBack /app
-COPY ./ReadyFront /app/ReadyFront
 ADD requirements.txt /app
+
+
+#ADD ./ReadyFront /app
+
 
 WORKDIR /app
 
 RUN pip install -r requirements.txt
+
+#RUN npm install
+#RUN npm start

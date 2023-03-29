@@ -28,4 +28,5 @@ urlpatterns = [
     re_path(r'^', include('Payment.urls')),
     re_path(r'^', include('Message.urls')),
     re_path(r'^', include('Job.urls')),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
 ]

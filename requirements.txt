@@ -1,9 +1,9 @@
 Django~=4.1.5
 djangorestframework~=3.14.0
 djangorestframework-simplejwt
-pymongo==3.12.3
+#pymongo==3.12.3
 djongo @ git+https://github.com/doableware/djongo@master
-dnspython==2.3.0
+#dnspython==2.3.0
 django-cors-headers==3.13.0
 django-allauth
 dj-rest-auth @ git+https://github.com/point88/dj-rest-auth.git@master
@@ -18,3 +18,7 @@ drf-yasg
 django-phonenumber-field
 phonenumbers
 twilio
+dj-stripe
+dj-paypal
+django-extensions 
+Werkzeug

@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from phonenumber_field.serializerfields import PhoneNumberField
-from User.models import User, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill, PhoneNumber
+from User.models import User, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill, PhoneNumber, Category
 
 from User.exceptions import (AccountNotRegisteredException,
                              InvalidCredentialsException,
@@ -14,20 +14,20 @@ class UserSerialize(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'rating')
 
-class UserNameSerialize(serializers.ModelSerializer):
+class UserProfileSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name')
+        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link')
 
 class FreelancerSerialize(serializers.ModelSerializer):
     class Meta:
         model = Freelancer
-        fields = ('id', 'UserId', 'registration_date', 'country', 'overview')
+        fields = ('id', 'UserId', 'registration_date')
 
 class ClientSerialize(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('id', 'UserId', 'registration_date', 'country', 'CompanyId')
+        fields = ('id', 'UserId', 'registration_date')
 
 class CompanySerialize(serializers.ModelSerializer):
     class Meta:
@@ -47,7 +47,12 @@ class CertificationSerialize(serializers.ModelSerializer):
 class SkillSerialize(serializers.ModelSerializer):
     class Meta:
         model = Skill
-        fields = ('id', 'skill_name')
+        fields = ('id', 'skill_name', 'CategoryId')
+
+class CategorySerialize(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'category_name')
 
 class HasSkillSerialize(serializers.ModelSerializer):
     class Meta:

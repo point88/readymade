@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -50,9 +51,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.apple',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.linkedin',
 
     'corsheaders',
     'User.apps.UserConfig',
@@ -62,7 +63,9 @@ INSTALLED_APPS = [
     'Message.apps.MessageConfig',
     'Contract.apps.ContractConfig',
 
-    'rest_framework_swagger',
+    "djstripe",
+
+    "django_extensions",
 ]
 
 SITE_ID = 1
@@ -113,16 +116,16 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'PORT': os.environ.get('POSTGRES_PORT'),
     },
-    "mongo": {
-        "ENGINE": "djongo",
-        "NAME": os.environ.get('MONGO_DB_NAME'),
-        "CLIENT": {
-            "host": os.environ.get('MONGO_DB_HOST'),
-            "port": os.environ.get('MONGO_DB_PORT'),
-            "username": os.environ.get('MONGO_DB_USERNAME'),
-            "password": os.environ.get('MONGO_DB_PASSWORD'),
-        },
-    }
+    #"mongo": {
+    #    "ENGINE": "djongo",
+    #    "NAME": os.environ.get('MONGO_DB_NAME'),
+    #    "CLIENT": {
+    #        "host": os.environ.get('MONGO_DB_HOST'),
+    #        "port": os.environ.get('MONGO_DB_PORT'),
+    #        "username": os.environ.get('MONGO_DB_USERNAME'),
+    #        "password": os.environ.get('MONGO_DB_PASSWORD'),
+    #    },
+    #}
 }
 
 
@@ -167,7 +170,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ReadyFront', 'build', 'static')]
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ReadyFront', 'build', 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -201,6 +204,18 @@ REST_AUTH = {
     'JWT_AUTH_HTTPONLY': False,
 }
 
+JWT_AUTH = {
+    # how long the original token is valid for
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=5),
+
+    # allow refreshing of tokens
+    'JWT_ALLOW_REFRESH': True,
+
+    # this is the maximum time AFTER the token was issued that
+    # it can be refreshed.  exprired tokens can't be refreshed.
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+}
+
 EMAIL_BACKEND                           = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST                              = 'mail.arkanpro.com'
 EMAIL_USE_TLS                           = True
@@ -212,16 +227,25 @@ DEFAULT_FROM_EMAIL                      = 'ferreol@arkanpro.com'
 ACCOUNT_LOGOUT_REDIRECT_URL             ='/accounts/login/'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS  = 1
 ACCOUNT_EMAIL_REQUIRED                  = True
-ACCOUNT_EMAIL_VERIFICATION              = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION              = "optional"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT            = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT          = 86400
-ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
+#ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
 ACCOUNT_AUTHENTICATION_METHOD           = 'email'
 ACCOUNT_USERNAME_REQUIRED               = False
 
-TOKEN_EXPIRE_MINUTES = 3
+TOKEN_EXPIRE_MINUTES = 300
 TOKEN_LENGTH = 6
 
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
+
+STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_")
+STRIPE_LIVE_MODE = False  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # Get it from the section in the Stripe dashboard where you added the webhook endpoint
+DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+SECURE_SSL_REDIRECT = True

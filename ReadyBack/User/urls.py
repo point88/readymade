@@ -44,5 +44,6 @@ urlpatterns=[
     re_path(r'^api/user/skill/(?P<pk>[0-9]+)', views.SkillDetailApi),
     re_path(r'^api/user/hasskills$', views.HasSkillsApi),
     re_path(r'^api/user/testresults$', views.TestResultsApi),
-    re_path(r'^api/user/testresult/(?P<pk>[0-9]+)', views.TestResultDetailApi)
+    re_path(r'^api/user/testresult/(?P<pk>[0-9]+)', views.TestResultDetailApi),
+    re_path(r'^api/user/categories$', views.CategoryApi)
 ]

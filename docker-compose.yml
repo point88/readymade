@@ -2,21 +2,21 @@ version: '3'
 
 services:
 
-  mongo:
-    image: mongo
-    container_name: mongo
-    restart: always
-    env_file: .env
-    environment: 
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
-      - MONGO_INITDB_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_INITDB_PASSWORD=${MONGO_DB_PASSWORD}
-    volumes:
-      - ${PWD}/_data/mongo:/data/db
-      - ${PWD}/docker/_mongo/fixtures:/import
-      - ${PWD}/docker/_mongo/scripts/init.sh:/docker-entrypoint-initdb.d/setup.sh
+  #mongo:
+  #  image: mongo
+  #  container_name: mongo
+  #  restart: always
+  #  env_file: .env
+  #  environment: 
+  #    - MONGO_INITDB_ROOT_USERNAME=${MONGO_DB_USERNAME}
+  #    - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DB_PASSWORD}
+  #    - MONGO_INITDB_DATABASE=${MONGO_DB_NAME}
+  #    - MONGO_INITDB_USERNAME=${MONGO_DB_USERNAME}
+  #    - MONGO_INITDB_PASSWORD=${MONGO_DB_PASSWORD}
+  #  volumes:
+  #    - ${PWD}/_data/mongo:/data/db
+  #    - ${PWD}/docker/_mongo/fixtures:/import
+  #    - ${PWD}/docker/_mongo/scripts/init.sh:/docker-entrypoint-initdb.d/setup.sh
 
   postgres:
     container_name: postgres
@@ -49,14 +49,15 @@ services:
     command: >
         sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
-               python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
-               python manage.py runserver 0.0.0.0:8000"
+               #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
+               #python manage.py djstripe_sync_models&&
+               python manage.py runserver_plus 0.0.0.0:8000 --cert-file cert.pem --key-file key.pem"
     env_file: .env
 
     ports:
       - 8000:8000
     depends_on:
-      - mongo
+      #- mongo
       - redis
       - postgres
 
@@ -85,7 +86,7 @@ services:
 
     depends_on:
       - postgres
-      - mongo
+      #- mongo
       - redis
 
 networks:

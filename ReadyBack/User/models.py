@@ -17,6 +17,8 @@ from twilio.base.exceptions import TwilioRestException
 class User(AbstractUser):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False)
     rating = models.SmallIntegerField(default=0)
+    facebook_link = models.CharField(max_length=255, default="")
+    linkedin_link = models.CharField(max_length=255, default="")
     pass
 
 class PhoneNumber(models.Model):
@@ -133,8 +135,18 @@ class Test_Result(models.Model):
     display_on_profile = models.BooleanField()
 
 
+class Category(models.Model):
+    id = models.BigAutoField(auto_created=True, primary_key=True)
+    category_name = models.CharField(max_length=128)
+
 class Skill(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
+    CategoryId = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        default = 0,
+        related_name='category_skill'
+    )
     skill_name = models.CharField(max_length=128)
 
 class Has_Skill(models.Model):
@@ -165,9 +177,9 @@ class Client(models.Model):
     )
     registration_date = models.DateField(auto_created=True)
     country = models.CharField(max_length=255)
-    CompanyId = models.OneToOneField(
-        Company,
-        on_delete = models.SET_DEFAULT,
-        default = 0,
-        related_name='company_client'
-    )
+    #CompanyId = models.OneToOneField(
+    #    Company,
+    #    on_delete = models.SET_DEFAULT,
+    #    default = 0,
+    #    related_name='company_client'
+    #)
