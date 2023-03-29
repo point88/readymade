@@ -65,7 +65,7 @@ INSTALLED_APPS = [
 
     "djstripe",
 
-    "django_extensions",
+    #"django_extensions",
 ]
 
 SITE_ID = 1
