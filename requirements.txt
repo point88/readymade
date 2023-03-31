@@ -22,3 +22,5 @@ dj-stripe
 dj-paypal
 django-extensions 
 Werkzeug
+gunicorn
+psycopg2-binary

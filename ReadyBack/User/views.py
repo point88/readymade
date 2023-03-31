@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from User.models import User, Freelancer, Client, Company, Test, Has_Skill, Test_Result, Skill, Certification, PhoneNumber, Category
 from User.serializers import UserSerialize, FreelancerSerialize, ClientSerialize, CompanySerialize, TestSerialize, CertificationSerialize, SkillSerialize, HasSkillSerialize, TestResultSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.generics import GenericAPIView
 import datetime
 
@@ -17,11 +17,14 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.apple.views import AppleOAuth2Adapter
 from allauth.socialaccount.providers.apple.client import AppleOAuth2Client
 
-def today_string():    
+def today_string():
     return datetime.date.today().strftime("%Y-%m-%d")
 
 class SendOrResendSMSAPI(GenericAPIView):
     serializer_class = PhoneNumberSerializer
+
+    authentication_classes = ()
+    permission_classes = ()
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -37,6 +40,9 @@ class SendOrResendSMSAPI(GenericAPIView):
 
 class VerifyPhoneNumberAPI(GenericAPIView):
     serializer_class = VerifyPhoneNumberSerializer
+
+    authentication_classes = ()
+    permission_classes = ()
     
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -76,6 +82,8 @@ def UsersApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([])
+@permission_classes([])
 def UserDetailApi(request, pk):
     
     try:
@@ -112,6 +120,8 @@ def UserDetailApi(request, pk):
 
 
 @api_view(['GET', 'POST'])
+@authentication_classes([])
+@permission_classes([])
 def FreelancersApi(request):
     if request.method == 'POST':
         freelancer = JSONParser().parse(request)
@@ -139,6 +149,8 @@ def FreelancersApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([])
+@permission_classes([])
 def FreelancerDetailApi(request, pk):
     try:
         freelancer = Freelancer.objects.get(pk=pk)
@@ -158,6 +170,8 @@ def FreelancerDetailApi(request, pk):
         return JsonResponse(result)
 
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def CategoryApi(request):
     if request.method == 'GET':
         categories = Category.objects.all()
@@ -165,6 +179,8 @@ def CategoryApi(request):
         return JsonResponse(category_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
 @api_view(['GET', 'POST'])
+@authentication_classes([])
+@permission_classes([])
 def ClientsApi(request):
     if request.method == 'POST':
         client = JSONParser().parse(request)
@@ -192,6 +208,8 @@ def ClientsApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([])
+@permission_classes([])
 def ClientDetailApi(request, pk):
     try:
         client = Client.objects.get(pk=pk)
@@ -215,6 +233,8 @@ def ClientDetailApi(request, pk):
 
 
 @api_view(['GET', 'POST'])
+@authentication_classes([])
+@permission_classes([])
 def CompaniesApi(request):
     if request.method == 'GET':
         companies = Company.objects.all()
@@ -228,6 +248,8 @@ def CompaniesApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@authentication_classes([])
+@permission_classes([])
 def CompanyDetailApi(request, pk):
     if request.method == 'GET':
         try:
@@ -292,6 +314,8 @@ def CertificationDetailApi(request, pk):
 
 
 @api_view(['GET', 'POST'])
+@authentication_classes([])
+@permission_classes([])
 def SkillsApi(request):
     if request.method == 'GET':
         skills = Skill.objects.all()
@@ -306,6 +330,8 @@ def SkillsApi(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def SkillDetailApi(request, pk):
     if request.method == 'GET':
         
@@ -315,6 +341,8 @@ def SkillDetailApi(request, pk):
         
 
 @api_view(['GET', 'POST'])
+@authentication_classes([])
+@permission_classes([])
 def HasSkillsApi(request):
     if request.method == 'POST':
         has_skill = JSONParser().parse(request)

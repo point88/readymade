@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*i=!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['18.185.108.243']
+ALLOWED_HOSTS = ['18.185.108.243', 'readymademe.com']
 
 
 # Application definition
@@ -88,7 +88,10 @@ ROOT_URLCONF = 'readyback.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'ReadyFront', 'build')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'ReadyFront', 'build'),
+            os.path.join(BASE_DIR, 'User/templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -181,8 +184,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    ),   
+        #'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -204,16 +207,13 @@ REST_AUTH = {
     'JWT_AUTH_HTTPONLY': False,
 }
 
-JWT_AUTH = {
-    # how long the original token is valid for
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=5),
+SIMPLE_JWT = {
 
-    # allow refreshing of tokens
-    'JWT_ALLOW_REFRESH': True,
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=200),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 
-    # this is the maximum time AFTER the token was issued that
-    # it can be refreshed.  exprired tokens can't be refreshed.
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'SLIDING_TOKEN_LIFETIME': datetime.timedelta(minutes=200),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),
 }
 
 EMAIL_BACKEND                           = 'django.core.mail.backends.smtp.EmailBackend'
@@ -224,13 +224,13 @@ EMAIL_HOST_USER                         = 'ferreol@arkanpro.com'
 EMAIL_HOST_PASSWORD                     = 'd-LOalOf.9eX'
 DEFAULT_FROM_EMAIL                      = 'ferreol@arkanpro.com'
 
-ACCOUNT_LOGOUT_REDIRECT_URL             ='/accounts/login/'
+ACCOUNT_LOGOUT_REDIRECT_URL             ='/accounts/login/' 
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS  = 1
 ACCOUNT_EMAIL_REQUIRED                  = True
-ACCOUNT_EMAIL_VERIFICATION              = "optional"
+ACCOUNT_EMAIL_VERIFICATION              = "none"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT            = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT          = 86400
-#ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
+ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
 ACCOUNT_AUTHENTICATION_METHOD           = 'email'
 ACCOUNT_USERNAME_REQUIRED               = False
 
@@ -248,4 +248,5 @@ DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # Get it from the section in the Stripe d
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
-SECURE_SSL_REDIRECT = True
+ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapterCustom'
+URL_FRONT = 'http://readymademe.com:3000/'

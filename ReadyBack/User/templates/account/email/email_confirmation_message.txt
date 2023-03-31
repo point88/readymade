@@ -1,0 +1,3 @@
+To confirm email, go to {{ activate_url }}
+
+Activation Code : {{ otp }}

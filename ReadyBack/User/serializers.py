@@ -57,7 +57,7 @@ class CategorySerialize(serializers.ModelSerializer):
 class HasSkillSerialize(serializers.ModelSerializer):
     class Meta:
         model = Has_Skill
-        fields = ('id', 'FreelancerId', 'SkillId')
+        fields = ('id', 'UserId', 'SkillId')
 
 class TestResultSerialize(serializers.ModelSerializer):
     class Meta:

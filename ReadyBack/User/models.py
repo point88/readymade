@@ -151,9 +151,10 @@ class Skill(models.Model):
 
 class Has_Skill(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
-    FreelancerId = models.ForeignKey(
-        Freelancer,
+    UserId = models.ForeignKey(
+        User,
         on_delete=models.CASCADE,
+        default=1,
         related_name='freelancer_has_skill'
     )
     SkillId = models.ForeignKey(

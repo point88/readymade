@@ -20,7 +20,10 @@ RUN apt-get update \
     npm \
     && pip3 install --upgrade pip
 
-ARG DJANGO_SECRET_KEY
+#ARG DJANGO_SECRET_KEY
+
+ENV PYTHONDONTWRITEBYTECODE 1
+
 
 RUN mkdir -p /app
 
