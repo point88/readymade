@@ -26,7 +26,7 @@ SECRET_KEY = 'readymade-devstage-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['18.185.108.243', 'readymademe.com']
+ALLOWED_HOSTS = ['18.185.108.243', '3.76.74.190', 'growbetterindia.com', 'localhost', 'readymademe.com']
 
 
 # Application definition
@@ -116,17 +116,7 @@ DATABASES = {
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'PORT': os.environ.get('POSTGRES_PORT'),
-    },
-    #"mongo": {
-    #    "ENGINE": "djongo",
-    #    "NAME": os.environ.get('MONGO_DB_NAME'),
-    #    "CLIENT": {
-    #        "host": os.environ.get('MONGO_DB_HOST'),
-    #        "port": os.environ.get('MONGO_DB_PORT'),
-    #        "username": os.environ.get('MONGO_DB_USERNAME'),
-    #        "password": os.environ.get('MONGO_DB_PASSWORD'),
-    #    },
-    #}
+    }
 }
 
 
@@ -171,6 +161,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ReadyFront', 'build', 'static')]
 
 # Default primary key field type
@@ -246,7 +237,7 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new ins
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapter'
-URL_FRONT = 'http://readymademe.com:3000/'
+URL_FRONT = 'https://www.growbetterindia.com/'
 
 DJANGO_DRF_FILEPOND_STORAGES_BACKEND = 'storages.backends.s3boto3.S3Boto3Storage'
 DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'temp_uploads')

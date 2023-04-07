@@ -12,8 +12,6 @@ services:
   #    - "27017:27017"
 
   app:
-    volumes:
-      - ./ReadyBack:/app
     environment:
       - DEBUG=true
   celery:
