@@ -1,12 +1,10 @@
-Django~=4.1.5
+Django<4.2
 djangorestframework~=3.14.0
 djangorestframework-simplejwt
-#pymongo==3.12.3
-djongo @ git+https://github.com/doableware/djongo@master
-#dnspython==2.3.0
 django-cors-headers==3.13.0
 django-allauth
-dj-rest-auth @ git+https://github.com/point88/dj-rest-auth.git@master
+# @ git+https://github.com/point88/django-allauth.git@master
+#dj-rest-auth @ git+https://github.com/point88/dj-rest-auth.git@master
 six
 django-rest-swagger
 celery
@@ -18,9 +16,8 @@ drf-yasg
 django-phonenumber-field
 phonenumbers
 twilio
-dj-stripe
-dj-paypal
-django-extensions 
-Werkzeug
 gunicorn
 psycopg2-binary
+boto3
+django-storages
+django-drf-filepond

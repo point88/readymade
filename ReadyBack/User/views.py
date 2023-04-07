@@ -82,8 +82,6 @@ def UsersApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([])
-@permission_classes([])
 def UserDetailApi(request, pk):
     
     try:
@@ -120,8 +118,6 @@ def UserDetailApi(request, pk):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([])
-@permission_classes([])
 def FreelancersApi(request):
     if request.method == 'POST':
         freelancer = JSONParser().parse(request)
@@ -149,8 +145,6 @@ def FreelancersApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([])
-@permission_classes([])
 def FreelancerDetailApi(request, pk):
     try:
         freelancer = Freelancer.objects.get(pk=pk)
@@ -170,8 +164,6 @@ def FreelancerDetailApi(request, pk):
         return JsonResponse(result)
 
 @api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
 def CategoryApi(request):
     if request.method == 'GET':
         categories = Category.objects.all()
@@ -179,8 +171,6 @@ def CategoryApi(request):
         return JsonResponse(category_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
 @api_view(['GET', 'POST'])
-@authentication_classes([])
-@permission_classes([])
 def ClientsApi(request):
     if request.method == 'POST':
         client = JSONParser().parse(request)
@@ -208,8 +198,6 @@ def ClientsApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([])
-@permission_classes([])
 def ClientDetailApi(request, pk):
     try:
         client = Client.objects.get(pk=pk)
@@ -233,8 +221,6 @@ def ClientDetailApi(request, pk):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([])
-@permission_classes([])
 def CompaniesApi(request):
     if request.method == 'GET':
         companies = Company.objects.all()
@@ -248,8 +234,6 @@ def CompaniesApi(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@authentication_classes([])
-@permission_classes([])
 def CompanyDetailApi(request, pk):
     if request.method == 'GET':
         try:
@@ -314,12 +298,12 @@ def CertificationDetailApi(request, pk):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([])
-@permission_classes([])
 def SkillsApi(request):
     if request.method == 'GET':
         skills = Skill.objects.all()
-        return JsonResponse(skills, status=status.HTTP_200_OK, safe=False)
+        skill_serializer = SkillSerialize(skills, many=True)
+        return JsonResponse(skill_serializer.data, status=status.HTTP_200_OK, safe=False)
+        
     if request.method == 'POST':
         skill = JSONParser().parse(request)
         skill_serializer = SkillSerialize(data=skill)
@@ -330,19 +314,14 @@ def SkillsApi(request):
 
 
 @api_view(['GET'])
-@authentication_classes([])
-@permission_classes([])
 def SkillDetailApi(request, pk):
     if request.method == 'GET':
-        
         skills = Skill.objects.filter(CategoryId=pk).all()
         user_ser = SkillSerialize(skills, many=True)
         return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
         
 
 @api_view(['GET', 'POST'])
-@authentication_classes([])
-@permission_classes([])
 def HasSkillsApi(request):
     if request.method == 'POST':
         has_skill = JSONParser().parse(request)

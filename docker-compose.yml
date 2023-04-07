@@ -56,6 +56,7 @@ services:
 #_plus 0.0.0.0:8000 --cert-file cert.pem --key-file key.pem
     ports:
       - 8000:8000
+      #- 3000:3000
     depends_on:
       #- mongo
       - redis

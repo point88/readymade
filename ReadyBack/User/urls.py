@@ -1,7 +1,7 @@
 from django.urls import include, re_path, path
 from User import views
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView, ResendEmailVerificationView
-from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView, UserDetailsView, ActivationCodeVerifyView
 
 from rest_framework_simplejwt.views import TokenVerifyView
 from dj_rest_auth.jwt_auth import get_refresh_view
@@ -10,20 +10,18 @@ urlpatterns=[
     path('send-sms', views.SendOrResendSMSAPI.as_view(), name='send_resend_sms'),
     path('verify-phone', views.VerifyPhoneNumberAPI.as_view(), name='verify_phone_number'),
 
-    path('account-confirm-email/<str:key>', ConfirmEmailView.as_view()),
+    path('user', UserDetailsView.as_view()),
     path('register', RegisterView.as_view()),
     path('login', LoginView.as_view()),
     path('logout', LogoutView.as_view()),
     path('verify-email', VerifyEmailView.as_view(), name='rest_verify_email'),
-    path('account-confirm-email', VerifyEmailView.as_view(), name='account_email_verification_sent'),
+    path('verify-code', ActivationCodeVerifyView.as_view(), name='rest_verify_code'),
     path('resend-email', ResendEmailVerificationView.as_view(), name="rest_resend_email"),
     path('token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('token/refresh', get_refresh_view().as_view(), name='token_refresh'),
     path('password/reset', PasswordResetView.as_view(), name='rest_password_reset'),
-    path('password/reset/confirm/<uidb64>/<token>', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('password/change', PasswordChangeView.as_view(), name='rest_password_change'),
-    #re_path(r'^account-confirm-email/(?P<key>[-:\w]+)', VerifyEmailView.as_view(), name='account_confirm_email'),
-    
+    path('password/reset/confirm', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
     path('facebook', views.FacebookLogin.as_view(), name='fb_login'),
     path('google', views.GoogleLogin.as_view(), name='google_login'),
     path('apple', views.AppleLogin.as_view(), name='apple_login'),

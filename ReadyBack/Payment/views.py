@@ -45,8 +45,9 @@ def PaymentTypesApi(request):
     permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment_types = Payment_Type.objects.all()
-        payment_types_serializer = Payment_TypeSerialize(data=payment_types)
-        return JsonResponse(payment_types_serializer.data, safe=False)
+        payment_types_serializer = Payment_TypeSerialize(payment_types, many=True)
+        return JsonResponse(payment_types_serializer.data, status=status.HTTP_200_OK, safe=False)
+
 
     if request.method == 'POST':
         payment_type = JSONParser().parse(request)

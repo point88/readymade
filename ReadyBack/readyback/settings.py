@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*i=!'
+SECRET_KEY = 'readymade-devstage-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*i=!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'djongo',
     
     'rest_framework',
     'rest_framework.authtoken',
@@ -56,6 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin',
 
     'corsheaders',
+
     'User.apps.UserConfig',
     'Job.apps.JobConfig',
     'Payment.apps.PaymentConfig',
@@ -63,9 +63,7 @@ INSTALLED_APPS = [
     'Message.apps.MessageConfig',
     'Contract.apps.ContractConfig',
 
-    "djstripe",
-
-    #"django_extensions",
+    'django_drf_filepond',
 ]
 
 SITE_ID = 1
@@ -182,9 +180,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        #'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -233,6 +229,7 @@ ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT          = 86400
 ACCOUNT_CONFIRM_EMAIL_ON_GET            = True
 ACCOUNT_AUTHENTICATION_METHOD           = 'email'
 ACCOUNT_USERNAME_REQUIRED               = False
+ACCOUNT_EMAIL_CONFIRMATION_HMAC         = False
 
 TOKEN_EXPIRE_MINUTES = 300
 TOKEN_LENGTH = 6
@@ -248,5 +245,22 @@ DJSTRIPE_WEBHOOK_SECRET = "whsec_xxx"  # Get it from the section in the Stripe d
 DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new installations
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
-ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapterCustom'
+ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapter'
 URL_FRONT = 'http://readymademe.com:3000/'
+
+DJANGO_DRF_FILEPOND_STORAGES_BACKEND = 'storages.backends.s3boto3.S3Boto3Storage'
+DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'temp_uploads')
+AWS_STORAGE_BUCKET_NAME = 'readymades3'
+AWS_S3_REGION_NAME = 'eu-central-1'
+#AWS_S3_ENDPOINT_URL = 'https://s3.eu-central-1.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_AUTO_CREATE_BUCKET = True
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'readymade/static'),
+#]
+#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)

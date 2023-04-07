@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
+from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
@@ -16,8 +17,8 @@ def JobsApi(request):
         job_serializer = JobSerialize(data = job)
         if job_serializer.is_valid():
             job_serializer.save()
-            return JsonResponse(job_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(job_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Successfully Saved'}, status=status.HTTP_200_OK)
+        return Response({'detail': 'Validation Error'}, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'GET':
         jobs = Job.models.Job.objects.select_related().all()

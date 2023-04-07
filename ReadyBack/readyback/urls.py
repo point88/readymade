@@ -18,15 +18,14 @@ from django.urls import path
 from django.urls import include, re_path
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),
+    #path('accounts/', include('allauth.urls')),
     re_path(r'^', include('User.urls')),
     re_path(r'^', include('Contract.urls')),
     re_path(r'^', include('Proposal.urls')),
     re_path(r'^', include('Payment.urls')),
     re_path(r'^', include('Message.urls')),
     re_path(r'^', include('Job.urls')),
-    path("stripe/", include("djstripe.urls", namespace="djstripe")),
+    re_path(r'^fp/', include('django_drf_filepond.urls')),
 ]
