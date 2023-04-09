@@ -39,7 +39,7 @@ services:
                python manage.py migrate &&
                #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
                #gunicorn readyback.wsgi -c gunicorn.cfg.py --reload&&
-               python manage.py runserver 0.0.0.0:8000"
+               python manage.py runsslserver 0.0.0.0:8000"
     env_file: .env
     ports:
       - 8000:8000
