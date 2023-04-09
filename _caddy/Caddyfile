@@ -6,5 +6,8 @@ www.growbetterindia.com {
     root /usr/share/caddy
   }
 
-  reverse_proxy app:8000
+#  reverse_proxy app:8000
+    proxy / http://app:8000 {
+        transparent
+    }
 }
