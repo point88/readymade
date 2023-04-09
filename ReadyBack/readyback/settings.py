@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'Contract.apps.ContractConfig',
 
     'django_drf_filepond',
+    "django_extensions",
 ]
 
 SITE_ID = 1
