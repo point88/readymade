@@ -3,8 +3,6 @@ djangorestframework~=3.14.0
 djangorestframework-simplejwt
 django-cors-headers==3.13.0
 django-allauth
-# @ git+https://github.com/point88/django-allauth.git@master
-#dj-rest-auth @ git+https://github.com/point88/dj-rest-auth.git@master
 six
 django-rest-swagger
 celery

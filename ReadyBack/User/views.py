@@ -164,6 +164,7 @@ def FreelancerDetailApi(request, pk):
         return JsonResponse(result)
 
 @api_view(['GET'])
+@permission_classes([])
 def CategoryApi(request):
     if request.method == 'GET':
         categories = Category.objects.all()

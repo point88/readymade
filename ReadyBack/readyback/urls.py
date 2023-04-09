@@ -20,12 +20,11 @@ from django.urls import include, re_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('accounts/', include('allauth.urls')),
     re_path(r'^api/', include('User.urls')),
     re_path(r'^api/', include('Contract.urls')),
     re_path(r'^api/', include('Proposal.urls')),
     re_path(r'^api/', include('Payment.urls')),
     re_path(r'^api/', include('Message.urls')),
     re_path(r'^api/', include('Job.urls')),
-    re_path(r'^fp/', include('django_drf_filepond.urls')),
+    re_path(r'^api/fp/', include('django_drf_filepond.urls')),
 ]
