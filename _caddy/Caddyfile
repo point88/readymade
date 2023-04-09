@@ -1,11 +1,11 @@
 {$PROD_HOST_NAME}
 
-www.growbetterindia.com {
+/ {
   file_server /static/* {
     # Requests for static files will look in whatever is mounted to /usr/share/caddy/static
     root /usr/share/caddy
   }
 
-  reverse_proxy http://app:8000
+  reverse_proxy app:8000
 
 }
