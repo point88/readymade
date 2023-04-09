@@ -21,5 +21,4 @@ psycopg2-binary
 boto3
 django-storages
 django-drf-filepond
-django-extensions 
-Werkzeug
+django-sslserver
