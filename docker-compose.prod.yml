@@ -18,7 +18,7 @@ services:
                python manage.py migrate &&
                #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
                #gunicorn readyback.wsgi -c gunicorn.cfg.py --reload&&
-               python manage.py runsslserver 0.0.0.0:8000 --certificate gd_bundle.crt --key private.key"
+               python manage.py runsslserver 0.0.0.0:8000 --certificate private.crt --key private.key"
 
   #caddy:
   #  image: caddy:2.6.2-alpine
