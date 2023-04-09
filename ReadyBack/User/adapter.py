@@ -11,7 +11,7 @@ class DefaultAccountAdapter(DefaultAccountAdapter):
         current_site = get_current_site(request)
         ctx = {
             "user": emailconfirmation.email_address.user,
-            "activate_url": settings.URL_FRONT + 'new/email-verified/' + emailconfirmation.email_address.email + "?" + emailconfirmation.key,
+            "activate_url": settings.URL_FRONT + 'new/email-verified/' + emailconfirmation.email_address.email + "-" + emailconfirmation.key,
             "current_site": current_site
         }
         if signup:

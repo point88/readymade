@@ -38,8 +38,8 @@ services:
         sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
                #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
-               #python manage.py runserver 0.0.0.0:8000&&
-               gunicorn readyback.wsgi -c gunicorn.cfg.py --reload"
+               #gunicorn readyback.wsgi -c gunicorn.cfg.py --reload&&
+               python manage.py runserver 0.0.0.0:8000"
     env_file: .env
     ports:
       - 8000:8000
