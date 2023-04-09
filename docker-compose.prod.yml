@@ -7,7 +7,7 @@ services:
   app:
     networks:
       - hosting_network
-    volumes:
+    #volumes:
       #- static_files_volume:/app/static
     environment:
       - PROD_HOST_NAME
