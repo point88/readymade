@@ -16,9 +16,9 @@ services:
     command: >
         sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
-               #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
+               python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
                #gunicorn readyback.wsgi -c gunicorn.cfg.py --reload&&
-               python manage.py runsslserver 0.0.0.0:8000 --certificate private.crt --key private.key"
+               python manage.py runsslserver 0.0.0.0:8000"
 
   #caddy:
   #  image: caddy:2.6.2-alpine
