@@ -6,11 +6,6 @@ services:
     image: postgres:14
     ports:
       - "5432:5432"
-  #mongo:
-  #  ports:
-      # Allow us to directly access the database during development
-  #    - "27017:27017"
-
   app:
     environment:
       - DEBUG=true

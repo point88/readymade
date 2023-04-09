@@ -239,7 +239,10 @@ DJSTRIPE_USE_NATIVE_JSONFIELD = True  # We recommend setting to True for new ins
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
 ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapter'
-URL_FRONT = 'https://www.readymademe.com:3000/'
+if DEBUG:
+    URL_FRONT = 'https://www.readymademe.com:3000/'
+else:
+    URL_FRONT = 'https://www.growbetterindia.com/'
 
 DJANGO_DRF_FILEPOND_STORAGES_BACKEND = 'storages.backends.s3boto3.S3Boto3Storage'
 DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'temp_uploads')
