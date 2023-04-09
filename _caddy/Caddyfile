@@ -1,6 +1,6 @@
 {$PROD_HOST_NAME}
 
-/ {
+api.growbetterindia.com {
   file_server /static/* {
     # Requests for static files will look in whatever is mounted to /usr/share/caddy/static
     root /usr/share/caddy
