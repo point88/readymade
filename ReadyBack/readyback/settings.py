@@ -229,7 +229,7 @@ TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = os.environ.get('TWILIO_PHONE_NUMBER')
 
 ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapter'
-if DEBUG:
+if os.environ.get('DEBUG'):
     URL_FRONT = 'https://www.readymademe.com:3000/'
 else:
     URL_FRONT = 'https://www.growbetterindia.com/'
