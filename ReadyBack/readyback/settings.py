@@ -27,8 +27,7 @@ SECRET_KEY = 'readymade-devstage-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
