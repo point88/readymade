@@ -26,11 +26,8 @@ SECRET_KEY = 'readymade-devstage-==$c*rl01(#n^ry*@$%4wqy68e4v!o!!z@$%1vk31tcf-%*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['18.185.108.243', '3.76.74.190', 'growbetterindia.com', 'localhost', 'readymademe.com']
-
-CORS_ORIGIN_WHITELIST = [
-    'https://localhost:3000'
-]
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -71,8 +68,6 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
