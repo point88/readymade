@@ -28,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['18.185.108.243', '3.76.74.190', 'growbetterindia.com', 'localhost', 'readymademe.com']
 
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000'
+]
 
 # Application definition
 
