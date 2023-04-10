@@ -10,6 +10,7 @@ services:
       - hosting_network
     environment:
       - PROD_HOST_NAME
+      - DEBUG=False
     command: >
         sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
