@@ -122,7 +122,10 @@ def UserDetailApi(request, pk):
             user_serializer.save()
             response = user_serializer.data
             response['customer_info']=customer_info
-            return JsonResponse(response)
+            if customer_info:
+                return JsonResponse(customer_info)
+            else:
+                return JsonResponse(user_serializer.data)
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         user.delete()

@@ -213,6 +213,7 @@ class JWTSerializer(serializers.Serializer):
         companyId = Company.objects.filter(UserId_id=user_data['pk']).first()
         if companyId:
             user_data['companyId'] = companyId.id
+            user_data['companyName'] = companyId.name
             return user_data
 
         return user_data
