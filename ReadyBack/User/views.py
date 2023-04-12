@@ -92,30 +92,37 @@ def UserDetailApi(request, pk):
         user_serializer = UserSerialize(user)
         return JsonResponse(user_serializer.data)
     elif request.method == 'PUT':
-        
+        customer_info = None
         data = JSONParser().parse(request)
         if 'account_type' in data:
             data['registration_date'] = today_string()
             if data['account_type'] == 0:
                 freelancer_serializer = FreelancerSerialize(data=data)
                 if freelancer_serializer.is_valid():
+                    customer_info = freelancer_serializer.data
                     freelancer_serializer.save()
             elif data['account_type'] == 1:
                 if not 'company_name' in data:
                     data['name'] = ""
+                else:
+                    data['name'] = data['company_name']
                 company_serializer = CompanySerialize(data=data)
                 if company_serializer.is_valid():
+                    customer_info = company_serializer.data
                     company_serializer.save()
             elif data['account_type'] == 2:
                 client_serializer = ClientSerialize(data=data)
                 if client_serializer.is_valid():
+                    customer_info = client_serializer.data
                     client_serializer.save()
 
         user_serializer = UserProfileSerialize(user, data=data)
 
         if user_serializer.is_valid():
             user_serializer.save()
-            return JsonResponse(user_serializer.data) 
+            response = user_serializer.data
+            response['customer_info']=customer_info
+            return JsonResponse(response)
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         user.delete()

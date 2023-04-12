@@ -95,7 +95,7 @@ class Freelancer(models.Model):
         on_delete = models.CASCADE,
         related_name='user_freelancer',
     )
-    registration_date = models.DateField(auto_created=True)
+    registration_date = models.DateField()
     country = models.CharField(max_length=128)
     overview = models.TextField(default="")
 
@@ -108,7 +108,7 @@ class Certification(models.Model):
     )
     certification_name = models.CharField(max_length=200)
     description = models.TextField(default="")
-    date_earned = models.DateField(auto_created=True)
+    date_earned = models.DateField()
     certification_link = models.TextField()
 
 class Test(models.Model):
@@ -166,8 +166,8 @@ class Has_Skill(models.Model):
 
 class Company(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
-    name = models.CharField(max_length=128, auto_created=True, default="")
-    location = models.CharField(max_length=255, auto_created=True, default="")
+    name = models.CharField(max_length=128, default="")
+    location = models.CharField(max_length=255, default="")
     UserId = models.OneToOneField(
         User,
         default = 0,
@@ -182,8 +182,8 @@ class Client(models.Model):
         on_delete = models.CASCADE,
         related_name='user_client',
     )
-    registration_date = models.DateField(auto_created=True)
-    country = models.CharField(max_length=255, auto_created=True, default="")
+    registration_date = models.DateField()
+    country = models.CharField(max_length=255, default="")
     #CompanyId = models.OneToOneField(
     #    Company,
     #    on_delete = models.SET_DEFAULT,
