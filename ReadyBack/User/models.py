@@ -166,8 +166,14 @@ class Has_Skill(models.Model):
 
 class Company(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
-    name = models.CharField(max_length=128)
-    location = models.CharField(max_length=255)
+    name = models.CharField(max_length=128, auto_created=True, default="")
+    location = models.CharField(max_length=255, auto_created=True, default="")
+    UserId = models.OneToOneField(
+        User,
+        default = 0,
+        on_delete = models.CASCADE,
+        related_name='user_company',
+    )
 
 class Client(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
@@ -177,7 +183,7 @@ class Client(models.Model):
         related_name='user_client',
     )
     registration_date = models.DateField(auto_created=True)
-    country = models.CharField(max_length=255)
+    country = models.CharField(max_length=255, auto_created=True, default="")
     #CompanyId = models.OneToOneField(
     #    Company,
     #    on_delete = models.SET_DEFAULT,

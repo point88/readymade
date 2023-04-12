@@ -100,7 +100,11 @@ def UserDetailApi(request, pk):
                 freelancer_serializer = FreelancerSerialize(data=data)
                 if freelancer_serializer.is_valid():
                     freelancer_serializer.save()
-            else:
+            elif data['account_type'] == 1:
+                company_serializer = CompanySerialize(data=data)
+                if company_serializer.is_valid():
+                    company_serializer.save()
+            elif data['account_type'] == 2:
                 client_serializer = ClientSerialize(data=data)
                 if client_serializer.is_valid():
                     client_serializer.save()
