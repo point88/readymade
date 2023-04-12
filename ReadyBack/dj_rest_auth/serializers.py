@@ -15,7 +15,7 @@ if 'allauth' in settings.INSTALLED_APPS:
     from .forms import AllAuthPasswordResetForm
 
 from .models import TokenModel
-from User.models import Freelancer, Client
+from User.models import Freelancer, Client, Company
 # Get the UserModel
 UserModel = get_user_model()
 
@@ -199,14 +199,20 @@ class JWTSerializer(serializers.Serializer):
         JWTUserDetailsSerializer = api_settings.USER_DETAILS_SERIALIZER
 
         user_data = JWTUserDetailsSerializer(obj['user'], context=self.context).data
+        
         freelancerId = Freelancer.objects.filter(UserId_id=user_data['pk']).first()
-        clientId = Client.objects.filter(UserId_id=user_data['pk']).first()
         if freelancerId:
             user_data['freelancerId'] = freelancerId.id
             return user_data
         
+        clientId = Client.objects.filter(UserId_id=user_data['pk']).first()
         if clientId:
             user_data['clientId'] = clientId.id
+            return user_data
+        
+        companyId = Company.objects.filter(UserId_id=user_data['pk']).first()
+        if companyId:
+            user_data['conpanyId'] = companyId.id
             return user_data
 
         return user_data
