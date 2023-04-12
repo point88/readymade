@@ -239,7 +239,7 @@ class PasswordResetView(GenericAPIView):
     Returns the success/fail message.
     """
     serializer_class = api_settings.PASSWORD_RESET_SERIALIZER
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     throttle_scope = 'dj_rest_auth'
 
     def post(self, request, *args, **kwargs):
@@ -301,18 +301,3 @@ class PasswordChangeView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({'detail': _('New password has been saved.')})
-
-class ActivationCodeVerifyView(GenericAPIView):
-    
-    permission_classes = (AllowAny,)
-    throttle_scope = 'dj_rest_auth'
-
-    def post(self, request, *args, **kwargs):
-        from allauth.account.models import EmailConfirmation, EmailAddress
-        emailconfirm = EmailConfirmation.objects.filter(key=request.data['key']).first()
-        if emailconfirm:
-            emailconfirm.key = "000000"
-            emailconfirm.save()
-            return Response({'detail': _('OK.')}, status=status.HTTP_200_OK)
-        else:
-            return Response({'detail': _('Not Found.')})

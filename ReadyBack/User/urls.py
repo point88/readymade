@@ -1,7 +1,7 @@
 from django.urls import include, re_path, path
 from User import views
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView, ResendEmailVerificationView
-from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView, UserDetailsView, ActivationCodeVerifyView
+from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView, UserDetailsView
 
 from rest_framework_simplejwt.views import TokenVerifyView
 from dj_rest_auth.jwt_auth import get_refresh_view
@@ -15,12 +15,10 @@ urlpatterns=[
     path('login', LoginView.as_view()),
     path('logout', LogoutView.as_view()),
     path('verify-email', VerifyEmailView.as_view(), name='rest_verify_email'),
-    path('verify-code', ActivationCodeVerifyView.as_view(), name='rest_verify_code'),
     path('resend-email', ResendEmailVerificationView.as_view(), name="rest_resend_email"),
     path('token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('token/refresh', get_refresh_view().as_view(), name='token_refresh'),
     path('password/reset', PasswordResetView.as_view(), name='rest_password_reset'),
-    path('password/reset/confirm', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     path('facebook', views.FacebookLogin.as_view(), name='fb_login'),
     path('google', views.GoogleLogin.as_view(), name='google_login'),

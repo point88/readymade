@@ -212,7 +212,7 @@ class JWTSerializer(serializers.Serializer):
         
         companyId = Company.objects.filter(UserId_id=user_data['pk']).first()
         if companyId:
-            user_data['conpanyId'] = companyId.id
+            user_data['companyId'] = companyId.id
             return user_data
 
         return user_data
@@ -288,16 +288,7 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
     set_password_form = None
 
     def custom_validation(self, attrs):
-        email_id = EmailAddress.objects.filter(user_id=self.user.id).first().id
-        confirm = EmailConfirmation.objects.filter(email_address_id=email_id).first()
-        if confirm:
-            if confirm.key != "000000":
-                raise ValidationError({'error': [_('Not Activated')]})
-        else:
-            raise ValidationError({'error': [_('Invalid value')]})
-        confirm.delete()
-
-        
+        pass
 
     def validate(self, attrs):
         if 'allauth' in settings.INSTALLED_APPS:
