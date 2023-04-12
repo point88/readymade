@@ -1,5 +1,5 @@
 from django.db import models
-from User.models import Freelancer, Client
+from User.models import Freelancer, Client, User
 from Proposal.models import Proposal
 
 # Create your models here.
@@ -13,7 +13,7 @@ class Message(models.Model):
         related_name='proposal_message'
     )
     ClientId = models.ForeignKey(
-        Client,
+        User,
         on_delete=models.DO_NOTHING,
         related_name='client_message'
     )

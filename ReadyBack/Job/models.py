@@ -1,5 +1,5 @@
 from django.db import models
-from User.models import Client, Skill
+from User.models import Client, Skill, User
 
 
 # Create your models here.
@@ -19,7 +19,7 @@ class Job(models.Model):
     payment_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     
     ClientId = models.ForeignKey(
-        Client,
+        User,
         on_delete=models.CASCADE,
         related_name='client_job'
     )
