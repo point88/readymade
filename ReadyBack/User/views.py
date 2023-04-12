@@ -101,6 +101,8 @@ def UserDetailApi(request, pk):
                 if freelancer_serializer.is_valid():
                     freelancer_serializer.save()
             elif data['account_type'] == 1:
+                if not 'company_name' in data:
+                    data['name'] = ""
                 company_serializer = CompanySerialize(data=data)
                 if company_serializer.is_valid():
                     company_serializer.save()

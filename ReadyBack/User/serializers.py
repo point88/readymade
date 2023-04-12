@@ -32,7 +32,7 @@ class ClientSerialize(serializers.ModelSerializer):
 class CompanySerialize(serializers.ModelSerializer):
     class Meta:
         model = Company
-        fields = ('id', 'UserId')
+        fields = ('id', 'name', 'UserId')
 
 class TestSerialize(serializers.ModelSerializer):
     class Meta:
