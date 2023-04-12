@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.utils.translation import gettext as _
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from phonenumber_field.serializerfields import PhoneNumberField
@@ -8,6 +9,8 @@ from User.models import User, Freelancer, Certification, Test, Test_Result, Has_
 from User.exceptions import (AccountNotRegisteredException,
                              InvalidCredentialsException,
                              AccountDisabledException)
+
+UserModel = get_user_model()
 
 class UserSerialize(serializers.ModelSerializer):
     class Meta:
@@ -20,19 +23,49 @@ class UserProfileSerialize(serializers.ModelSerializer):
         fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link')
 
 class FreelancerSerialize(serializers.ModelSerializer):
+    attrs = None
+
     class Meta:
         model = Freelancer
         fields = ('id', 'UserId', 'registration_date')
+    
+    def validate(self, attrs):
+        self.attrs = attrs
+        return attrs
+    
+    def save(self):
+        return Freelancer.objects.create(registration_date=self.attrs["registration_date"], UserId_id=self.attrs['UserId'].id)
+        
 
 class ClientSerialize(serializers.ModelSerializer):
+    attrs = None
+
     class Meta:
         model = Client
         fields = ('id', 'UserId', 'registration_date')
 
+    def validate(self, attrs):
+        self.attrs = attrs
+        return attrs
+    
+    def save(self):
+        return Client.objects.create(registration_date=self.attrs["registration_date"], UserId_id=self.attrs['UserId'].id)
+        
+
 class CompanySerialize(serializers.ModelSerializer):
+    attrs = None
+    
     class Meta:
         model = Company
         fields = ('id', 'name', 'UserId')
+    
+    def validate(self, attrs):
+        self.attrs = attrs
+        return attrs
+    
+    def save(self):
+        return Company.objects.create(name=self.attrs["name"], UserId_id=self.attrs['UserId'].id)
+        
 
 class TestSerialize(serializers.ModelSerializer):
     class Meta:

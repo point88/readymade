@@ -239,7 +239,7 @@ class PasswordResetView(GenericAPIView):
     Returns the success/fail message.
     """
     serializer_class = api_settings.PASSWORD_RESET_SERIALIZER
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     throttle_scope = 'dj_rest_auth'
 
     def post(self, request, *args, **kwargs):

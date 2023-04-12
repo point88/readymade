@@ -35,7 +35,7 @@ class AllAuthPasswordResetForm(DefaultPasswordResetForm):
         current_site = get_current_site(request)
         email = self.cleaned_data['email']
 
-        new_password = ''.join(secrets.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(7))
+        new_password = ''.join(secrets.choice(string.ascii_uppercase + string.ascii_lowercase) for i in range(9))
 
         for user in self.users:
 
