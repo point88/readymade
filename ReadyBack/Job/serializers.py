@@ -11,7 +11,7 @@ class JobSerialize(serializers.ModelSerializer):
 
     class Meta:
         model = Job
-        fields = ['id', 'title', 'description', 'is_contest', 'is_hourly', 'is_recruiter_project', 'currency_type', 'payment_amount', 'skills', 'ClientId', 'PaymentTypeId']
+        fields = ['id', 'title', 'description', 'is_contest', 'is_hourly', 'is_recruiter_project', 'currency_type', 'payment_amount', 'skills', 'UserId', 'PaymentTypeId']
     
     def create(self, validated_data):
         skills = validated_data.pop('skills')

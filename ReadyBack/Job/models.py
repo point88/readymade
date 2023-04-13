@@ -18,7 +18,7 @@ class Job(models.Model):
     currency_type = models.CharField(max_length=3, default="USD")
     payment_amount = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     
-    ClientId = models.ForeignKey(
+    UserId = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='client_job'
