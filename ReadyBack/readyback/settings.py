@@ -235,7 +235,7 @@ else:
     URL_FRONT = 'https://www.growbetterindia.com/'
 
 DJANGO_DRF_FILEPOND_STORAGES_BACKEND = 'storages.backends.s3boto3.S3Boto3Storage'
-DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'temp_uploads')
+DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'static/temp_uploads')
 AWS_STORAGE_BUCKET_NAME = 'readymades3'
 AWS_S3_REGION_NAME = 'eu-central-1'
 #AWS_S3_ENDPOINT_URL = 'https://s3.eu-central-1.amazonaws.com'

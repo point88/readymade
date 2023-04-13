@@ -1,18 +1,35 @@
-from django.views.decorators.csrf import csrf_exempt
+import os
+
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 
 from Job.serializers import JobSerialize, ExpectedDurationSerialize
 import Job.models
+
+from django_drf_filepond.api import store_upload, delete_stored_upload
+from django_drf_filepond.models import TemporaryUpload, StoredUpload
 # Create your views here.
 
-@csrf_exempt
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def JobsApi(request):
     if request.method == 'POST':
+        data = request.POST
+        try:
+            filepond_ids = data.getlist('filepond')
+        except KeyError:
+            print('No filepond key found in submitted form.')
+        
+        stored_uploads = []
+        for upload_id in filepond_ids:
+            tu = TemporaryUpload.objects.get(upload_id=upload_id)
+            store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
+            stored_uploads.append(upload_id)
+        print(stored_uploads)
         job = JSONParser().parse(request)
         job_serializer = JobSerialize(data = job)
         if job_serializer.is_valid():
@@ -36,8 +53,8 @@ def JobsApi(request):
             
         return JsonResponse(results, status=status.HTTP_201_CREATED, safe=False)
 
-@csrf_exempt
 @api_view(['GET', 'PUT', 'DELTE'])
+@permission_classes([IsAuthenticated])
 def JobDetailApi(request, pk):
     if request.method == 'GET':
         try:
@@ -54,7 +71,6 @@ def JobDetailApi(request, pk):
         result['client_name'] = job.ClientId.UserId.name
         return JsonResponse(result)
 
-@csrf_exempt
 @api_view(['GET', 'POST'])
 def ExpectedDurationsApi(request):
     if request.method == 'GET':
@@ -69,7 +85,6 @@ def ExpectedDurationsApi(request):
             return JsonResponse(expected_duration_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(expected_duration_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def ExpectedDurationDetailApi(request, pk):
     if request.method == 'GET':
