@@ -7,35 +7,37 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 
-from Job.serializers import JobSerialize, ExpectedDurationSerialize
+from Job.serializers import JobSerialize
 import Job.models
 
-from django_drf_filepond.api import store_upload, delete_stored_upload
-from django_drf_filepond.models import TemporaryUpload, StoredUpload
+from django_drf_filepond.api import store_upload
+from django_drf_filepond.models import TemporaryUpload
 # Create your views here.
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def JobsApi(request):
     if request.method == 'POST':
-        data = request.POST
+        job = JSONParser().parse(request)
         try:
-            filepond_ids = data.getlist('filepond')
+            filepond_ids = job['filepond']
         except KeyError:
-            print('No filepond key found in submitted form.')
+            filepond_ids = []
         
         stored_uploads = []
         for upload_id in filepond_ids:
             tu = TemporaryUpload.objects.get(upload_id=upload_id)
             store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
             stored_uploads.append(upload_id)
-        print(stored_uploads)
-        job = JSONParser().parse(request)
-        job_serializer = JobSerialize(data = job)
-        if job_serializer.is_valid():
-            job_serializer.save()
-            return Response({'detail': 'Successfully Saved'}, status=status.HTTP_200_OK)
-        return Response({'detail': 'Validation Error'}, status=status.HTTP_400_BAD_REQUEST)
+
+        job['uploads'] = stored_uploads
+
+        serializer = JobSerialize(job)
+        if not serializer.validate():
+            return Response({'UserId or PaymetTypeId': 'Not existing'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        serializer.save()
+        return Response({'detail': 'Successfully Saved'}, status=status.HTTP_200_OK)
+
     
     if request.method == 'GET':
         jobs = Job.models.Job.objects.select_related().all()
@@ -70,27 +72,3 @@ def JobDetailApi(request, pk):
         result['payment_type'] = job.PaymentTypeId.type_name
         result['client_name'] = job.ClientId.UserId.name
         return JsonResponse(result)
-
-@api_view(['GET', 'POST'])
-def ExpectedDurationsApi(request):
-    if request.method == 'GET':
-        expected_durations = Job.models.Expected_Duration.objects.all()
-        expected_durations_serializer = ExpectedDurationSerialize(data=expected_durations)
-        return JsonResponse(expected_durations_serializer.data, safe=False)
-    if request.method == 'POST':
-        expected_duration = JSONParser().parse(request)
-        expected_duration_serializer = ExpectedDurationSerialize(data=expected_duration)
-        if expected_duration_serializer.is_valid():
-            expected_duration_serializer.save()
-            return JsonResponse(expected_duration_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(expected_duration_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def ExpectedDurationDetailApi(request, pk):
-    if request.method == 'GET':
-        try:
-            expected_duration = Job.models.Expected_Duration.objects.get(pk=pk)
-        except:
-            return JsonResponse({'message': 'The Except_Duration does not exist'}, status=status.HTTP_404_NOT_FOUND)
-        expected_duration_serializer = ExpectedDurationSerialize(data=expected_duration)
-        return JsonResponse(expected_duration_serializer.data, status=status.HTTP_200_OK)

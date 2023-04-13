@@ -19,6 +19,7 @@ class User(AbstractUser):
     rating = models.SmallIntegerField(default=0)
     facebook_link = models.CharField(max_length=255, default="")
     linkedin_link = models.CharField(max_length=255, default="")
+    profile_image = models.CharField(max_length=25, default="")
     pass
 
 class PhoneNumber(models.Model):

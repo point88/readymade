@@ -1,3 +1,4 @@
+import os
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework import status
@@ -15,6 +16,9 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.apple.views import AppleOAuth2Adapter
 from allauth.socialaccount.providers.apple.client import AppleOAuth2Client
+
+from django_drf_filepond.api import store_upload
+from django_drf_filepond.models import TemporaryUpload
 
 def today_string():
     return datetime.date.today().strftime("%Y-%m-%d")
@@ -80,7 +84,7 @@ def UsersApi(request):
         return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT'])
 def UserDetailApi(request, pk):
     
     try:
@@ -94,6 +98,19 @@ def UserDetailApi(request, pk):
     elif request.method == 'PUT':
         customer_info = None
         data = JSONParser().parse(request)
+        try:
+            filepond_ids = data['filepond']
+        except KeyError:
+            filepond_ids = []
+        
+        stored_uploads = []
+        for upload_id in filepond_ids:
+            tu = TemporaryUpload.objects.get(upload_id=upload_id)
+            store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
+            stored_uploads.append(upload_id)
+        
+        data['profile_image'] = stored_uploads[0]
+
         if 'account_type' in data:
             data['registration_date'] = today_string()
             if data['account_type'] == 0:
@@ -127,9 +144,6 @@ def UserDetailApi(request, pk):
             else:
                 return JsonResponse(user_serializer.data)
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        user.delete()
-        return JsonResponse({'message': 'User was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])

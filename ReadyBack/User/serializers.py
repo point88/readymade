@@ -20,7 +20,7 @@ class UserSerialize(serializers.ModelSerializer):
 class UserProfileSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link')
+        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link', 'profile_image')
 
 class FreelancerSerialize(serializers.ModelSerializer):
     attrs = None

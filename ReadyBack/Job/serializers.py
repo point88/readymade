@@ -1,32 +1,54 @@
-from rest_framework import serializers
-from Job.models import Expected_Duration, Job, Other_Skills, Job_Attachment
+from Job.models import Job, Other_Skills, Job_Attachment
 
-class OtherSkillsSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Other_Skills
-        fields = ['id', 'SkillId']
 
-class JobSerialize(serializers.ModelSerializer):
-    skills = OtherSkillsSerialize(many=True)
+class JobSerialize:
 
-    class Meta:
-        model = Job
-        fields = ['id', 'title', 'description', 'is_contest', 'is_hourly', 'is_recruiter_project', 'currency_type', 'payment_amount', 'skills', 'UserId', 'PaymentTypeId']
+    def __init__(self, data):
+        self.data = data
     
-    def create(self, validated_data):
-        skills = validated_data.pop('skills')
-        job = Job.objects.create(**validated_data)
+    def validate(self):
+        if not 'skills' in self.data:
+            self.data['skills'] = []
+        if not 'title' in self.data:
+            self.data['title'] = ""
+        if not 'description' in self.data:
+            self.data['description'] = ""
+        if not 'is_contest' in self.data:
+            self.data['is_contest'] = False
+        if not 'is_hourly' in self.data:
+            self.data['is_hourly'] = False
+        if not 'is_recruiter_project' in self.data:
+            self.data['is_recruiter_project'] = False
+        if not 'currency_type' in self.data:
+            self.data['currency_type'] = "USD"
+        if not 'payment_amount' in self.data:
+            self.data['payment_amount'] = 0.0
+        
+        if not 'user_id' in self.data:
+            return False
+        if not 'payment_type_id' in self.data:
+            return False
+        return True
+
+    def save(self):
+        skills = self.data.pop('skills')
+        uploads = self.data.pop('uploads')
+        job = Job.objects.create(
+            title=self.data['title'],
+            description=self.data['description'],
+            is_contest=self.data['is_contest'],
+            is_hourly=self.data['is_hourly'],
+            is_recruiter_project=self.data['is_recruiter_project'],
+            currency_type=self.data['currency_type'],
+            payment_amount=self.data['payment_amount'],
+            ClientId_id=self.data['user_id'],
+            PaymentTypeId_id=self.data['payment_type_id']
+        )
+
         for skill in skills:
-            Other_Skills.objects.create(JobId_id=job.id, **skill)
+            Other_Skills.objects.create(JobId_id=job.id, SkillId_id=skill)
+        
+        for upload in uploads:
+            Job_Attachment.objects.create(JobId_id=job.id, attachment_link=upload)
+
         return job
-
-class ExpectedDurationSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Expected_Duration
-        fields = ('id', 'duration_text')
-
-
-class JobAttachmentSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Job_Attachment
-        fields = ('id', 'attachment_link', 'JobId')
