@@ -158,7 +158,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+#STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ReadyFront', 'build', 'static')]
@@ -239,7 +239,7 @@ DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'static/temp_uploads')
 AWS_STORAGE_BUCKET_NAME = 'readymades3'
 AWS_S3_REGION_NAME = 'eu-central-1'
 #AWS_S3_ENDPOINT_URL = 'https://s3.eu-central-1.amazonaws.com'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.eu-central-1.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_AUTO_CREATE_BUCKET = True
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
@@ -249,4 +249,4 @@ AWS_LOCATION = 'static'
 #STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, 'readymade/static'),
 #]
-#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)

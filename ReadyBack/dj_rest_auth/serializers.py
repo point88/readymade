@@ -8,14 +8,14 @@ from rest_framework import exceptions, serializers
 from rest_framework.exceptions import ValidationError
 
 from allauth.account.models import EmailConfirmation, EmailAddress
-
+from User.serializers import UserProfileSerialize
 from .app_settings import api_settings
 
 if 'allauth' in settings.INSTALLED_APPS:
     from .forms import AllAuthPasswordResetForm
 
 from .models import TokenModel
-from User.models import Freelancer, Client, Company
+from User.models import Freelancer, Client, Company, User
 # Get the UserModel
 UserModel = get_user_model()
 
@@ -133,7 +133,7 @@ class LoginSerializer(serializers.Serializer):
         # If required, is the email verified?
         if 'dj_rest_auth.registration' in settings.INSTALLED_APPS:
             self.validate_email_verification_status(user)
-
+        
         attrs['user'] = user
         return attrs
 
@@ -178,6 +178,12 @@ class UserDetailsSerializer(serializers.ModelSerializer):
             extra_fields.append('first_name')
         if hasattr(UserModel, 'last_name'):
             extra_fields.append('last_name')
+        if hasattr(UserModel, 'facebook_link'):
+            extra_fields.append('facebook_link')
+        if hasattr(UserModel, 'linkedin_link'):
+            extra_fields.append('linkedin_link')
+        if hasattr(UserModel, 'profile_image'):
+            extra_fields.append('profile_image')
         model = UserModel
         fields = ('pk', *extra_fields)
         read_only_fields = ('email',)

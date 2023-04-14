@@ -24,9 +24,7 @@ urlpatterns=[
     path('google', views.GoogleLogin.as_view(), name='google_login'),
     path('apple', views.AppleLogin.as_view(), name='apple_login'),
 
-    re_path(r'^users$', views.UsersApi),
     re_path(r'^user/(?P<pk>[0-9]+)', views.UserDetailApi),
-    re_path(r'^user/freelancers$', views.FreelancersApi),
     re_path(r'^user/freelancer/(?P<pk>[0-9]+)', views.FreelancerDetailApi),
     re_path(r'^user/clients$', views.ClientsApi),
     re_path(r'^user/client/(?P<pk>[0-9]+)', views.ClientDetailApi),

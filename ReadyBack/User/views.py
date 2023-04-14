@@ -1,6 +1,7 @@
 import os
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
+from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -68,23 +69,7 @@ class AppleLogin(SocialLoginView):
     callback_url = "http://18.185.108.243:8000/dashboard/"
     client_class = AppleOAuth2Client
 
-@api_view(['GET', 'POST'])
-def UsersApi(request):
-    if request.method == 'POST':
-        user = JSONParser().parse(request)
-        user_serializer = UserSerialize(data=user)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            return JsonResponse(user_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    if request.method == "GET":
-        user_data = User.objects.all()
-        user_ser = UserSerialize(user_data, many=True)
-        return JsonResponse(user_ser.data, safe=False, status=status.HTTP_201_CREATED)        
-
-
-@api_view(['GET', 'PUT'])
+@api_view(['PUT'])
 def UserDetailApi(request, pk):
     
     try:
@@ -92,10 +77,7 @@ def UserDetailApi(request, pk):
     except:
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
     
-    if request.method == 'GET':
-        user_serializer = UserSerialize(user)
-        return JsonResponse(user_serializer.data)
-    elif request.method == 'PUT':
+    if request.method == 'PUT':
         customer_info = None
         data = JSONParser().parse(request)
         try:
@@ -103,13 +85,12 @@ def UserDetailApi(request, pk):
         except KeyError:
             filepond_ids = []
         
-        stored_uploads = []
+        #stored_uploads = []
         for upload_id in filepond_ids:
             tu = TemporaryUpload.objects.get(upload_id=upload_id)
             store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
-            stored_uploads.append(upload_id)
-        
-        data['profile_image'] = stored_uploads[0]
+            #stored_uploads.append(os.path.join(upload_id, tu.upload_name))
+            data['profile_image'] = settings.STATIC_URL + os.path.join(upload_id, tu.upload_name)
 
         if 'account_type' in data:
             data['registration_date'] = today_string()
@@ -144,33 +125,6 @@ def UserDetailApi(request, pk):
             else:
                 return JsonResponse(user_serializer.data)
         return JsonResponse(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'POST'])
-def FreelancersApi(request):
-    if request.method == 'POST':
-        freelancer = JSONParser().parse(request)
-        freelancer['registration_date'] = today_string()
-        freelancer_serializer = FreelancerSerialize(data=freelancer)
-        if freelancer_serializer.is_valid():
-            freelancer_serializer.save()
-            return JsonResponse(freelancer_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(freelancer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    if request.method == "GET":
-        freelancers = Freelancer.objects.select_related().all()
-        
-        results = []
-        for lancer in freelancers[0:50]:
-            result = {}
-            result['id'] = lancer.id
-            result['name'] = lancer.UserId.name
-            result['email'] = lancer.UserId.email
-            result['phone'] = lancer.UserId.phone
-            result['registration_date'] = lancer.registration_date
-            result['country'] = lancer.country
-            results.append(result)
-
-        return JsonResponse(results, status=status.HTTP_201_CREATED, safe=False)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
