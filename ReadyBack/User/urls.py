@@ -1,7 +1,7 @@
 from django.urls import include, re_path, path
 from User import views
-from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView, ResendEmailVerificationView
-from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView, UserDetailsView
+from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ResendEmailVerificationView
+from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, UserDetailsView
 
 from rest_framework_simplejwt.views import TokenVerifyView
 from dj_rest_auth.jwt_auth import get_refresh_view
@@ -25,19 +25,8 @@ urlpatterns=[
     path('apple', views.AppleLogin.as_view(), name='apple_login'),
 
     re_path(r'^user/(?P<pk>[0-9]+)', views.UserDetailApi),
-    re_path(r'^user/freelancer/(?P<pk>[0-9]+)', views.FreelancerDetailApi),
-    re_path(r'^user/clients$', views.ClientsApi),
-    re_path(r'^user/client/(?P<pk>[0-9]+)', views.ClientDetailApi),
-    re_path(r'^user/companies$', views.CompaniesApi),
-    re_path(r'^user/company/(?P<pk>[0-9]+)', views.CompanyDetailApi),
-    re_path(r'^user/tests$', views.TestsApi),
-    re_path(r'^user/test/(?P<pk>[0-9]+)', views.TestDetailApi),
-    re_path(r'^user/certifications$', views.CertificationsApi),
-    re_path(r'^user/certification/(?P<pk>[0-9]+)', views.CertificationDetailApi),
     re_path(r'^user/skills$', views.SkillsApi),
-    re_path(r'^user/skill/(?P<pk>[0-9]+)', views.SkillDetailApi),
+    re_path(r'^user/skill/(?P<pk>[0-9]+)', views.SkillByCategoryApi),
     re_path(r'^user/hasskills$', views.HasSkillsApi),
-    re_path(r'^user/testresults$', views.TestResultsApi),
-    re_path(r'^user/testresult/(?P<pk>[0-9]+)', views.TestResultDetailApi),
     re_path(r'^user/categories$', views.CategoryApi)
 ]

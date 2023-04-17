@@ -250,3 +250,8 @@ AWS_LOCATION = 'static'
 #    os.path.join(BASE_DIR, 'readymade/static'),
 #]
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+if os.environ.get('DEBUG'):
+    SECRET_KEY = "sk_test_dqSpsxCvyfzb6YAPBSrQW1J64TFAqoPUPtGh8NNU"
+else:
+    SECRET_KEY = "sk_test_dqSpsxCvyfzb6YAPBSrQW1J64TFAqoPUPtGh8NNU"

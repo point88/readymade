@@ -1,18 +1,26 @@
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 from Payment.models import Payment, Payment_Type
 from Payment.serializers import PaymentSerialize, Payment_TypeSerialize
 
-# Create your views here.
-@csrf_exempt
+from Payment.moyasar import Moyasar
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def MakePaymentApi(request):
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        payment = Moyasar()
+        payment.prepareCreatePayment(data)
+        result = payment.execute()
+        return JsonResponse(result, safe=False)
+
 @api_view(['GET', 'POST'])
 def PaymentsApi(request):
-    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payments = Payment.objects.select_related().all()
         
@@ -30,19 +38,15 @@ def PaymentsApi(request):
         return JsonResponse(results, safe=False)
 
 
-@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def PaymentDetailApi(request, pk):
-    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment = Payment.objects.get(pk=pk)
         payment_serializer = PaymentSerialize(data=payment)
         return JsonResponse(payment_serializer.data, safe=False)
 
-@csrf_exempt
 @api_view(['GET', 'POST'])
 def PaymentTypesApi(request):
-    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment_types = Payment_Type.objects.all()
         payment_types_serializer = Payment_TypeSerialize(payment_types, many=True)
@@ -57,10 +61,8 @@ def PaymentTypesApi(request):
             return JsonResponse(payment_type_serializer.data, status=status.HTTP_201_CREATED)
         return JsonResponse(payment_type_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
 def PaymentTypeDetailApi(request, pk):
-    permission_classes = [IsAuthenticated]
     if request.method == 'GET':
         payment_type = Payment_Type.objects.get(pk=pk)
         payment_type_serializer = Payment_TypeSerialize(data=payment_type)

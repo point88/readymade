@@ -12,11 +12,6 @@ from User.exceptions import (AccountNotRegisteredException,
 
 UserModel = get_user_model()
 
-class UserSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'rating')
-
 class UserProfileSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -65,17 +60,6 @@ class CompanySerialize(serializers.ModelSerializer):
     
     def save(self):
         return Company.objects.create(name=self.attrs["name"], UserId_id=self.attrs['UserId'].id)
-        
-
-class TestSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Test
-        fields = ('id', 'test_name', 'test_link')
-
-class CertificationSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Certification
-        fields = ('id', 'FreelancerId', 'certification_name', 'description', 'date_earned', 'certification_link')
 
 class SkillSerialize(serializers.ModelSerializer):
     class Meta:
@@ -91,11 +75,6 @@ class HasSkillSerialize(serializers.ModelSerializer):
     class Meta:
         model = Has_Skill
         fields = ('id', 'UserId', 'SkillId')
-
-class TestResultSerialize(serializers.ModelSerializer):
-    class Meta:
-        model = Test_Result
-        fields = ('id', 'FreelancerId', 'TestId', 'start_time', 'end_time', 'result_link', 'score', 'display_on_profile')
 
 class PhoneNumberSerializer(serializers.ModelSerializer):
     phone_number = PhoneNumberField()

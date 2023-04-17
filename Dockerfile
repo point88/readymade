@@ -18,6 +18,7 @@ RUN apt-get update \
     git \
     nodejs \
     npm \
+    curl \
     && pip3 install --upgrade pip
 
 ENV PYTHONDONTWRITEBYTECODE 1

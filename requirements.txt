@@ -20,4 +20,3 @@ boto3
 django-storages
 django-drf-filepond
 django-sslserver
-moyasar
