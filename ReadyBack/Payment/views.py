@@ -15,8 +15,7 @@ def MakePaymentApi(request):
     if request.method == 'POST':
         data = JSONParser().parse(request)
         payment = Moyasar()
-        payment.prepareCreatePayment(data)
-        result = payment.execute()
+        result = payment.createPayment(data)
         return JsonResponse(result, safe=False)
 
 @api_view(['GET', 'POST'])

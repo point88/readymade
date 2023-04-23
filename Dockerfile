@@ -6,16 +6,15 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y \
     build-essential \
+    libcurl4-openssl-dev \
     libssl-dev \
     libffi-dev \
     python3-dev \
-    build-essential \
     libjpeg-dev \
     zlib1g-dev \
     gcc \
     libc-dev \
     bash \
-    git \
     nodejs \
     npm \
     curl \
