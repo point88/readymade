@@ -1,10 +1,10 @@
-from django.urls import re_path
+from django.urls import path
 from Payment import views
 
 urlpatterns = [
-    re_path(r'^payment/create', views.MakePaymentApi),
-    re_path(r'^payments$', views.PaymentsApi),
-    re_path(r'^payment/(?P<pk>[0-9]+)', views.PaymentDetailApi),
-    re_path(r'^payment_types$', views.PaymentTypesApi),
-    re_path(r'^payment_type/(?P<pk>[0-9]+)', views.PaymentTypeDetailApi)
+    path('payment/create', views.MakePaymentApi),
+    path('payments', views.PaymentsApi),
+    path('payment/<int:pk>', views.PaymentDetailApi),
+    path('payment_types', views.PaymentTypesApi),
+    path('payment_type/<int:pk>', views.PaymentTypeDetailApi)
 ]

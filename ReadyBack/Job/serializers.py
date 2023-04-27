@@ -1,5 +1,7 @@
-from Job.models import Job, Other_Skills, Job_Attachment
+from django.db.models import Count
 
+from Job.models import Job, Other_Skills, Job_Attachment
+from User.models import Skill
 
 class JobSerialize:
 
@@ -52,3 +54,10 @@ class JobSerialize:
             Job_Attachment.objects.create(JobId_id=job.id, attachment_link=upload)
 
         return job
+# deprecated, need to clean up
+def JobStatisticsSerializer(cat_ids):
+    result = Other_Skills.objects.select_related('SkillId').filter(SkillId__CategoryId__in=cat_ids).values('JobId', 'SkillId__CategoryId').distinct().order_by()
+    count = [0] * (max(cat_ids)+1)
+    for i in range(len(result)):
+        count[result[i]['SkillId__CategoryId']] += 1
+    return count

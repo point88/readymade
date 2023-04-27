@@ -96,6 +96,7 @@ class Freelancer(models.Model):
         on_delete = models.CASCADE,
         related_name='user_freelancer',
     )
+    hourly = models.SmallIntegerField(default=10)
     registration_date = models.DateField()
     country = models.CharField(max_length=128)
     overview = models.TextField(default="")

@@ -1,5 +1,5 @@
 from django.db import models
-from User.models import Client, Skill, User
+from User.models import Skill, User
 
 
 # Create your models here.

@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from User.models import User, Skill, PhoneNumber, Category
-from User.serializers import FreelancerSerialize, ClientSerialize, CompanySerialize, SkillSerialize, HasSkillSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize
+from User.serializers import FreelancerSerialize, ClientSerialize, CompanySerialize, SkillSerialize, HasSkillSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize, TopFreelancerSerializer
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.generics import GenericAPIView
 import datetime
@@ -85,11 +85,9 @@ def UserDetailApi(request, pk):
         except KeyError:
             filepond_ids = []
         
-        #stored_uploads = []
         for upload_id in filepond_ids:
             tu = TemporaryUpload.objects.get(upload_id=upload_id)
             store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
-            #stored_uploads.append(os.path.join(upload_id, tu.upload_name))
             data['profile_image'] = settings.STATIC_URL + os.path.join(upload_id, tu.upload_name)
 
         if 'account_type' in data:
@@ -160,3 +158,9 @@ def HasSkillsApi(request):
                 has_skill_serializer.save()
         return JsonResponse(has_skill_serializer.data, status=status.HTTP_201_CREATED)
 
+@api_view(['GET'])
+@permission_classes([])
+def TopFreelancerApi(request, numbers=7):
+    if request.method == 'GET':
+        result = TopFreelancerSerializer(numbers)
+        return JsonResponse(result, safe=False)

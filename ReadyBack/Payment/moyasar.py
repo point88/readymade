@@ -12,8 +12,6 @@ BULK_INVOICE_ENDPOINT = "invoices/bulk"
 class Moyasar:
     def __init__(self):
         self.EMPTY = ""
-        self.PUT_METHOD = "PUT"
-        self.POST_METHOD = "POST"
 
         self.CANCEL_ACTION = "cancel"
         self.REFUND_ACTION = "refund"
@@ -46,7 +44,7 @@ class Moyasar:
         crl.setopt(crl.USERPWD, settings.SECRET_KEY)
         crl.setopt(crl.WRITEDATA, buffer)
         crl.setopt(crl.POSTFIELDS, postfields)
-
+ 
         crl.perform()
         crl.close()
 

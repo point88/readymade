@@ -33,7 +33,7 @@ class LoginSerializer(serializers.Serializer):
             user = self.authenticate(email=email, password=password)
         else:
             msg = _('Must include "email" and "password".')
-            raise exceptions.ValidationError(msg)
+            raise exceptions.ValidationError({"message":msg})
 
         return user
 
@@ -42,7 +42,7 @@ class LoginSerializer(serializers.Serializer):
             user = self.authenticate(username=username, password=password)
         else:
             msg = _('Must include "username" and "password".')
-            raise exceptions.ValidationError(msg)
+            raise exceptions.ValidationError({"message":msg})
 
         return user
 
@@ -53,23 +53,16 @@ class LoginSerializer(serializers.Serializer):
             user = self.authenticate(username=username, password=password)
         else:
             msg = _('Must include either "username" or "email" and "password".')
-            raise exceptions.ValidationError(msg)
+            raise exceptions.ValidationError({"message":msg})
 
         return user
 
     def get_auth_user_using_allauth(self, username, email, password):
-        from allauth.account import app_settings as allauth_account_settings
-
-        # Authentication through email
-        if allauth_account_settings.AUTHENTICATION_METHOD == allauth_account_settings.AuthenticationMethod.EMAIL:
-            return self._validate_email(email, password)
-
-        # Authentication through username
-        if allauth_account_settings.AUTHENTICATION_METHOD == allauth_account_settings.AuthenticationMethod.USERNAME:
-            return self._validate_username(username, password)
-
-        # Authentication through either username or email
-        return self._validate_username_email(username, email, password)
+        
+        if len(UserModel.objects.filter(email__iexact=email).all()) == 0:        
+            raise Exception()
+            
+        return self._validate_email(email, password)
 
     def get_auth_user_using_orm(self, username, email, password):
         if email:
@@ -97,16 +90,16 @@ class LoginSerializer(serializers.Serializer):
             # which does not exist. This is the solution for it. See issue #264.
             try:
                 return self.get_auth_user_using_allauth(username, email, password)
-            except url_exceptions.NoReverseMatch:
-                msg = _('Unable to log in with provided credentials.')
-                raise exceptions.ValidationError(msg)
+            except:
+                msg = _('Provided email is not registered.')
+                raise exceptions.ValidationError({"message":msg})
         return self.get_auth_user_using_orm(username, email, password)
 
     @staticmethod
     def validate_auth_user_status(user):
         if not user.is_active:
             msg = _('User account is disabled.')
-            raise exceptions.ValidationError(msg)
+            raise exceptions.ValidationError({"message":msg})
 
     @staticmethod
     def validate_email_verification_status(user):
@@ -122,10 +115,11 @@ class LoginSerializer(serializers.Serializer):
         email = attrs.get('email')
         password = attrs.get('password')
         user = self.get_auth_user(username, email, password)
+        
 
         if not user:
             msg = _('Unable to log in with provided credentials.')
-            raise exceptions.ValidationError(msg)
+            raise exceptions.ValidationError({"message":msg})
 
         # Did we get back an active user?
         self.validate_auth_user_status(user)

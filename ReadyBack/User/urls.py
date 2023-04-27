@@ -24,9 +24,16 @@ urlpatterns=[
     path('google', views.GoogleLogin.as_view(), name='google_login'),
     path('apple', views.AppleLogin.as_view(), name='apple_login'),
 
-    re_path(r'^user/(?P<pk>[0-9]+)', views.UserDetailApi),
-    re_path(r'^user/skills$', views.SkillsApi),
-    re_path(r'^user/skill/(?P<pk>[0-9]+)', views.SkillByCategoryApi),
-    re_path(r'^user/hasskills$', views.HasSkillsApi),
-    re_path(r'^user/categories$', views.CategoryApi)
+    #Update detailed user info
+    path('user/<int:pk>', views.UserDetailApi),
+    #Get skill list based on categoryId
+    path('user/skill/<int:pk>', views.SkillByCategoryApi),
+    #Get skill list
+    path('user/skills', views.SkillsApi),
+    #Set skills
+    path('user/hasskills', views.HasSkillsApi),
+    #Get Category list
+    path('user/categories', views.CategoryApi),
+    #Get Top rated Freelancers
+    path('user/toprated/<int:numbers>', views.TopFreelancerApi)
 ]

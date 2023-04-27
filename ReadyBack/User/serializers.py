@@ -112,3 +112,30 @@ class VerifyPhoneNumberSerializer(serializers.Serializer):
         queryset.check_verification(security_code=otp)
 
         return validated_data
+
+def TopFreelancerSerializer(numbers):
+    top_lancers = Freelancer.objects.all().order_by('-UserId__rating')
+
+    user_ids = [top_lancers[i].UserId.id for i in range(min(numbers, len(top_lancers)))]
+
+    cats = Has_Skill.objects.filter(UserId__in=user_ids).select_related("SkillId").select_related("SkillId__CategoryId").values('UserId', 'SkillId__CategoryId', 'SkillId__CategoryId__category_name').distinct().all()
+
+    result = []
+    for i in range(min(numbers, len(top_lancers))):
+        lancer = {}
+        lancer['rating']        = top_lancers[i].UserId.rating
+        lancer['first_name']    = top_lancers[i].UserId.first_name
+        lancer['last_name']     = top_lancers[i].UserId.last_name
+        lancer['profile_image'] = top_lancers[i].UserId.profile_image
+        lancer['hourly']        = top_lancers[i].hourly
+        lancer['bio']           = top_lancers[i].overview
+        categories = []
+        
+        for j in range(len(cats)):
+            if cats[j]['UserId'] == top_lancers[i].UserId.id:
+                categories.append(cats[j]['SkillId__CategoryId__category_name'])
+        lancer['category']      = categories
+        
+        result.append(lancer)
+    
+    return result

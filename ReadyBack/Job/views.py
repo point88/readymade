@@ -7,12 +7,23 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 
-from Job.serializers import JobSerialize
-import Job.models
+from Job.serializers import JobSerialize, JobStatisticsSerializer
+from Job.models import Job
 
 from django_drf_filepond.api import store_upload
 from django_drf_filepond.models import TemporaryUpload
 # Create your views here.
+
+# deprecated need to clean up
+@api_view(['POST'])
+@permission_classes([])
+def JobStatisticsApi(request):
+    if request.method == "POST":
+        cats = JSONParser().parse(request)
+        cat_ids = cats['categories']
+        result = JobStatisticsSerializer(cat_ids)
+        return JsonResponse(list(result), status=status.HTTP_200_OK, safe=False)
+
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -35,6 +46,7 @@ def JobsApi(request):
         serializer = JobSerialize(job)
         if not serializer.validate():
             return Response({'UserId or PaymetTypeId': 'Not existing'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
         serializer.save()
         return Response({'detail': 'Successfully Saved'}, status=status.HTTP_200_OK)
 
