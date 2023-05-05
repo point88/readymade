@@ -232,7 +232,7 @@ ACCOUNT_ADAPTER = 'User.adapter.DefaultAccountAdapter'
 if os.environ.get('DEBUG'):
     URL_FRONT = 'https://www.readymademe.com:3000/'
 else:
-    URL_FRONT = 'https://www.growbetterindia.com/'
+    URL_FRONT = 'https://www.readymademe.com/'
 
 DJANGO_DRF_FILEPOND_STORAGES_BACKEND = 'storages.backends.s3boto3.S3Boto3Storage'
 DJANGO_DRF_FILEPOND_UPLOAD_TMP = os.path.join(BASE_DIR, 'static/temp_uploads')
