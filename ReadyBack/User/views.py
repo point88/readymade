@@ -128,7 +128,6 @@ def UserDetailApi(request, pk):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def CategoryApi(request):
     if request.method == 'GET':
         categories = Category.objects.all()

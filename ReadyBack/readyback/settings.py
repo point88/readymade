@@ -172,9 +172,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
@@ -190,7 +187,7 @@ REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'readymade',
     'JWT_AUTH_REFRESH_COOKIE': 'readymade-refresh-token',
-    #'JWT_AUTH_HTTPONLY': False,
+    'JWT_AUTH_HTTPONLY': False,
 }
 
 SIMPLE_JWT = {
