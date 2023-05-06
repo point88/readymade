@@ -18,6 +18,8 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.providers.apple.views import AppleOAuth2Adapter
 from allauth.socialaccount.providers.apple.client import AppleOAuth2Client
 
+from rest_framework.permissions import IsAuthenticated
+
 from django_drf_filepond.api import store_upload
 from django_drf_filepond.models import TemporaryUpload
 
@@ -126,6 +128,7 @@ def UserDetailApi(request, pk):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def CategoryApi(request):
     if request.method == 'GET':
         categories = Category.objects.all()
