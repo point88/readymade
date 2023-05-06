@@ -6,16 +6,12 @@ services:
     ports:
       - "5432:5432"
   app:
-    networks:
-      - hosting_network
-    environment:
-      - PROD_HOST_NAME
-      - DEBUG=False
     command: >
         sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
-               #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
-               #gunicorn readyback.wsgi -c gunicorn.cfg.py&&
                python manage.py runsslserver 0.0.0.0:8000"
-networks:
-  hosting_network:
+    environment:
+      - DEBUG=True
+  celery:
+    environment:
+      - DEBUG=True
