@@ -10,7 +10,7 @@ services:
     command: >
         sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
                python manage.py migrate &&
-               python manage.py runserver 0.0.0.0:8000"
+               python manage.py runsslserver 0.0.0.0:8000"
     environment:
       - DEBUG=True
   celery:
