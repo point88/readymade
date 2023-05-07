@@ -126,13 +126,11 @@ def UserDetailApi(request, pk):
 
 
 @api_view(['GET'])
-@permission_classes([])
 def CategoryApi(request):
     if request.method == 'GET':
         categories = Category.objects.all()
         category_ser = CategorySerialize(categories, many=True)
-        return Response(request.headers)
-        #return JsonResponse(category_ser.data, safe=False, status=status.HTTP_201_CREATED)        
+        return JsonResponse(category_ser.data, safe=False, status=status.HTTP_201_CREATED)        
 
 @api_view(['GET'])
 def SkillsApi(request):
