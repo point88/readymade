@@ -206,9 +206,9 @@ EMAIL_BACKEND                           = 'django.core.mail.backends.smtp.EmailB
 EMAIL_HOST                              = 'mail.arkanpro.com'
 EMAIL_USE_TLS                           = True
 EMAIL_PORT                              = 587
-EMAIL_HOST_USER                         = 'ferreol@arkanpro.com'
-EMAIL_HOST_PASSWORD                     = 'd-LOalOf.9eX'
-DEFAULT_FROM_EMAIL                      = 'ferreol@arkanpro.com'
+EMAIL_HOST_USER                         = 'milos@arkanpro.com'
+EMAIL_HOST_PASSWORD                     = '5{HngSNh,qVH'
+DEFAULT_FROM_EMAIL                      = 'milos@arkanpro.com'
 
 ACCOUNT_LOGOUT_REDIRECT_URL             ='/accounts/login/' 
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS  = 1
