@@ -16,7 +16,6 @@ class DefaultAccountAdapter(DefaultAccountAdapter):
             email_template = "account/email/email_confirmation_signup"
         else:
             email_template = "account/email/email_confirmation"
-        
         self.send_mail(email_template, emailconfirmation.email_address.email, ctx)
 
 
