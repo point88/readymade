@@ -42,7 +42,7 @@ def JobsApi(request):
             stored_uploads.append(upload_id)
 
         job['uploads'] = stored_uploads
-
+        return Response({'detail': 'Successfully Saved'}, status=status.HTTP_200_OK)
         serializer = JobSerialize(job)
         if not serializer.validate():
             return Response({'UserId or PaymetTypeId': 'Not existing'}, status=status.HTTP_406_NOT_ACCEPTABLE)
