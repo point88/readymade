@@ -44,7 +44,6 @@ def JobsApi(request):
         job['uploads'] = stored_uploads
         
         serializer = JobSerialize(job)
-        return Response({'test': 'ok'}, status=status.HTTP_200_OK)
         if not serializer.validate():
             return Response({'UserId or PaymetTypeId': 'Not existing'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         
