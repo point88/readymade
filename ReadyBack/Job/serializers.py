@@ -48,7 +48,7 @@ class JobSerialize:
         )
 
         for skill in skills:
-            Other_Skills.objects.create(JobId_id=job.id, SkillId_id=skill)
+            Other_Skills.objects.create(JobId_id=job.id, SkillId_id=1)
         
         for upload in uploads:
             Job_Attachment.objects.create(JobId_id=job.id, attachment_link=upload)
