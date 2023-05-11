@@ -25,6 +25,7 @@ class Moyasar:
         self.ENCODE = 'iso-8859-1'
     
     def createPayment(self, data):
+        status = 200
         data['amount'] = int(data['amount'] * 100)
         buffer = io.BytesIO()
         post_data = {'amount': data['amount'],
@@ -46,6 +47,7 @@ class Moyasar:
         crl.setopt(crl.POSTFIELDS, postfields)
  
         crl.perform()
+        status = crl.getinfo(pycurl.HTTP_CODE)
         crl.close()
 
-        return json.loads(buffer.getvalue().decode(self.ENCODE))
+        return json.loads(buffer.getvalue().decode(self.ENCODE)), status
