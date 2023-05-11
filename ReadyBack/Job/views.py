@@ -47,7 +47,7 @@ def JobsApi(request):
         if not serializer.validate():
             return Response({'UserId or PaymetTypeId': 'Not existing'}, status=status.HTTP_406_NOT_ACCEPTABLE)
         
-        serializer.save()
+        #serializer.save()
         return Response({'detail': 'Successfully Saved'}, status=status.HTTP_200_OK)
 
     
