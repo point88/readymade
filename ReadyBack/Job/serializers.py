@@ -46,9 +46,9 @@ class JobSerialize:
             ClientId_id=self.data['user_id'],
             PaymentTypeId_id=self.data['payment_type_id']
         )
-
+        return job.id
         for skill in skills:
-            Other_Skills.objects.create(JobId_id=1, SkillId_id=1)
+            Other_Skills.objects.create(JobId_id="1", SkillId_id="1")
         
         for upload in uploads:
             Job_Attachment.objects.create(JobId_id=job.id, attachment_link=upload)
