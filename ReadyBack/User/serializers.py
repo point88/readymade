@@ -5,7 +5,9 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from phonenumber_field.serializerfields import PhoneNumberField
 from User.models import User, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill, PhoneNumber, Category
-
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from django_elasticsearch_dsl import Document, fields, IntegerField
+from Search.Documents import UserDocument,SkillDocument,HasSkillDocument
 from User.exceptions import (AccountNotRegisteredException,
                              InvalidCredentialsException,
                              AccountDisabledException)
@@ -139,3 +141,41 @@ def TopFreelancerSerializer(numbers):
         result.append(lancer)
     
     return result
+
+class SkillSerializer(DocumentSerializer):
+    
+    class Meta:
+        model = Skill
+        document = SkillDocument
+        fields = ["name"]
+        read_only = True
+
+class HasSkillSerializer(DocumentSerializer):
+    skill_name = SkillSerializer(read_only=True)
+
+    class Meta:
+        model = Has_Skill
+        document = HasSkillDocument
+        fields = ["SkillId", "UserId", "skill_name"]  
+        read_only = True
+
+class SkillNameSerializer(serializers.Serializer):
+    skill_name = serializers.CharField()
+
+class UserSerializer(DocumentSerializer):
+    skill_names = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        document = UserDocument
+        fields = [
+            'id',
+            "username",
+            "first_name",
+            "last_name",
+            "skill_names",
+        ]
+        read_only_fields = fields
+
+    def get_skill_names(self, obj):
+        return [skill['skill_name'] for skill in obj.skill_names]

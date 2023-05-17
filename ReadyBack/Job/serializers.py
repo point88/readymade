@@ -2,6 +2,10 @@ from django.db.models import Count
 
 from Job.models import Job, Other_Skills, Job_Attachment
 from User.models import Skill
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from django_elasticsearch_dsl import Document, fields, IntegerField
+from Search.Documents import JobDocument,OtherSkillsDocument,SkillDocument
+from rest_framework import serializers
 
 class JobSerialize:
 
@@ -61,3 +65,34 @@ def JobStatisticsSerializer(cat_ids):
     for i in range(len(result)):
         count[result[i]['SkillId__CategoryId']] += 1
     return count
+
+class SkillSerializer(DocumentSerializer):
+    
+    class Meta:
+        model = Skill
+        document = SkillDocument
+        fields = ["name"]
+        read_only = True
+
+class OtherSkillsSerializer(DocumentSerializer):
+    skill_name = SkillSerializer(read_only=True)
+
+    class Meta:
+        model = Other_Skills
+        document = OtherSkillsDocument
+        fields = ["SkillId", "JobId", "skill_name"]  
+        read_only = True
+
+
+class JobSerializer(DocumentSerializer):
+    class Meta:
+        document = JobDocument
+        model = Job
+        fields = (
+            "id",
+            "title",
+            "description",
+            "payment_amount",
+            "skill_names",
+        )
+        read_only_fields = fields
