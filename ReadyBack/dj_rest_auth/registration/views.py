@@ -71,6 +71,10 @@ class RegisterView(CreateAPIView):
                 status=status.HTTP_201_CREATED,
                 headers=headers,
             )
+            if 'social' in request.data:
+                new_registered = EmailAddress.objects.filter(email=request.data['email']).first()
+                new_registered.verified = True
+                new_registered.save()
         else:
             response = Response(status=status.HTTP_204_NO_CONTENT, headers=headers)
 
