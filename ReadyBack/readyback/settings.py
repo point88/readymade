@@ -61,11 +61,9 @@ INSTALLED_APPS = [
     'Proposal.apps.ProposalConfig',
     'Message.apps.MessageConfig',
     'Contract.apps.ContractConfig',
-    'Search.apps.SearchConfig',
 
     'django_drf_filepond',
     "sslserver",
-    "django_elasticsearch_dsl",
 ]
 
 SITE_ID = 1
@@ -177,9 +175,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    "DEFAULT_PAGINATION_CLASS" : "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE":10,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 AUTH_USER_MODEL='User.User'
@@ -260,9 +256,3 @@ if not os.environ.get('DEBUG'):
     SECRET_KEY = "sk_test_dqSpsxCvyfzb6YAPBSrQW1J64TFAqoPUPtGh8NNU"
 else:
     SECRET_KEY = "sk_test_dqSpsxCvyfzb6YAPBSrQW1J64TFAqoPUPtGh8NNU"
-
-ELASTICSEARCH_DSL= {
-    'default':{
-        'hosts':'localhost:9200'
-    }
-}

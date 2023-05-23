@@ -26,6 +26,5 @@ urlpatterns = [
     re_path(r'^api/', include('Payment.urls')),
     re_path(r'^api/', include('Message.urls')),
     re_path(r'^api/', include('Job.urls')),
-    re_path(r'^api/', include('Search.urls')),
     re_path(r'^api/fp/', include('django_drf_filepond.urls')),
 ]
