@@ -20,8 +20,9 @@ class User(AbstractUser):
     facebook_link = models.CharField(max_length=255, default="")
     linkedin_link = models.CharField(max_length=255, default="")
     profile_image = models.CharField(max_length=255, default="")
+    subscription_type = models.SmallIntegerField(default=0)
+    subscription_expire_at = models.DateTimeField(null=True, blank = True)
     pass
-
 class PhoneNumber(models.Model):
     user = models.OneToOneField(
         User,
@@ -88,6 +89,10 @@ class PhoneNumber(models.Model):
             raise NotAcceptable(_("Your security code is wrong, expired or this phone is verified before."))
         
         return self.is_verified
+
+class Subscription(models.Model):
+    id = models.BigAutoField(auto_created=True,primary_key=True)
+    subscription_type=models.CharField(max_length=128)
 
 class Freelancer(models.Model):
     id = models.BigAutoField(auto_created=True,primary_key=True)

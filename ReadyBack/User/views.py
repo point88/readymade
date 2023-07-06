@@ -9,7 +9,7 @@ from User.models import User, Skill, PhoneNumber, Category
 from User.serializers import FreelancerSerialize, ClientSerialize, CompanySerialize, SkillSerialize, HasSkillSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize, TopFreelancerSerializer
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.generics import GenericAPIView
-import datetime
+from datetime import datetime, timedelta
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
@@ -69,14 +69,16 @@ class AppleLogin(SocialLoginView):
     callback_url = "http://18.185.108.243:8000/"
     client_class = AppleOAuth2Client
 
-@api_view(['PUT'])
+@api_view(['GET', 'PUT'])
 def UserDetailApi(request, pk):
     
     try:
         user = User.objects.get(pk=pk)
     except:
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    
+    if request.method == 'GET':
+        user_serializer = UserProfileSerialize(user)
+        return JsonResponse(user_serializer.data,status=status.HTTP_200_OK, safe=False)
     if request.method == 'PUT':
         customer_info = None
         data = JSONParser().parse(request)
@@ -89,7 +91,14 @@ def UserDetailApi(request, pk):
             tu = TemporaryUpload.objects.get(upload_id=upload_id)
             store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
             data['profile_image'] = settings.STATIC_URL + os.path.join(upload_id, tu.upload_name)
-
+        if 'subscription_expire_at' in data:
+            print('asdf')
+            expire_date = data['subscription_expire_at']
+            print('expire_date', expire_date)
+            if(expire_date == 1):
+                data['subscription_expire_at'] = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d %H:%M")
+            elif(expire_date == 12):
+                data['subscription_expire_at'] = datetime.now() + timedelta(days=365).strftime("%Y-%m-%d %H:%M")
         if 'account_type' in data:
             data['registration_date'] = today_string()
             if data['account_type'] == 0:
