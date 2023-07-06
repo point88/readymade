@@ -69,14 +69,16 @@ class AppleLogin(SocialLoginView):
     callback_url = "http://18.185.108.243:8000/"
     client_class = AppleOAuth2Client
 
-@api_view(['PUT'])
+@api_view(['GET', 'PUT'])
 def UserDetailApi(request, pk):
     
     try:
         user = User.objects.get(pk=pk)
     except:
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    
+    if request.method == 'GET':
+        user_serializer = UserProfileSerialize(user)
+        return JsonResponse(user_serializer.data,status=status.HTTP_200_OK, safe=False)
     if request.method == 'PUT':
         customer_info = None
         data = JSONParser().parse(request)

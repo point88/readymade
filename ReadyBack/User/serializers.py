@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from phonenumber_field.serializerfields import PhoneNumberField
-from User.models import User, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill, PhoneNumber, Category
+from User.models import User, Subscription, Freelancer, Certification, Test, Test_Result, Has_Skill, Company, Client, Skill, PhoneNumber, Category
 
 from User.exceptions import (AccountNotRegisteredException,
                              InvalidCredentialsException,
@@ -15,8 +15,12 @@ UserModel = get_user_model()
 class UserProfileSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link', 'profile_image')
+        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link', 'profile_image','subscription_type')
 
+class SubscriptionSerialize(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ('id', 'subscription_type')
 class FreelancerSerialize(serializers.ModelSerializer):
     attrs = None
 
