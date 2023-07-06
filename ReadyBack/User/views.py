@@ -9,7 +9,7 @@ from User.models import User, Skill, PhoneNumber, Category
 from User.serializers import FreelancerSerialize, ClientSerialize, CompanySerialize, SkillSerialize, HasSkillSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize, TopFreelancerSerializer
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.generics import GenericAPIView
-import datetime
+from datetime import datetime, timedelta
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
@@ -91,7 +91,14 @@ def UserDetailApi(request, pk):
             tu = TemporaryUpload.objects.get(upload_id=upload_id)
             store_upload(upload_id, os.path.join(upload_id, tu.upload_name))
             data['profile_image'] = settings.STATIC_URL + os.path.join(upload_id, tu.upload_name)
-
+        if 'subscription_expire_at' in data:
+            print('asdf')
+            expire_date = data['subscription_expire_at']
+            print('expire_date', expire_date)
+            if(expire_date == 1):
+                data['subscription_expire_at'] = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d %H:%M")
+            elif(expire_date == 12):
+                data['subscription_expire_at'] = datetime.now() + timedelta(days=365).strftime("%Y-%m-%d %H:%M")
         if 'account_type' in data:
             data['registration_date'] = today_string()
             if data['account_type'] == 0:

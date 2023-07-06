@@ -15,7 +15,7 @@ UserModel = get_user_model()
 class UserProfileSerialize(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link', 'profile_image','subscription_type')
+        fields = ('id', 'username', 'first_name', 'last_name', 'facebook_link', 'linkedin_link', 'profile_image','subscription_type', 'subscription_expire_at')
 
 class SubscriptionSerialize(serializers.ModelSerializer):
     class Meta:
