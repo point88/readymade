@@ -9,7 +9,7 @@ from User.models import User, Skill, PhoneNumber, Category
 from User.serializers import FreelancerSerialize, ClientSerialize, CompanySerialize, SkillSerialize, HasSkillSerialize, PhoneNumberSerializer, VerifyPhoneNumberSerializer, UserProfileSerialize, CategorySerialize, TopFreelancerSerializer
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.generics import GenericAPIView
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
@@ -22,7 +22,7 @@ from django_drf_filepond.api import store_upload
 from django_drf_filepond.models import TemporaryUpload
 
 def today_string():
-    return datetime.date.today().strftime("%Y-%m-%d")
+    return date.today().strftime("%Y-%m-%d")
 
 class SendOrResendSMSAPI(GenericAPIView):
     serializer_class = PhoneNumberSerializer
