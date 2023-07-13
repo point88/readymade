@@ -12,7 +12,7 @@ services:
       - PROD_HOST_NAME
       - DEBUG=False
     command: >
-        sh -c "python manage.py makemigrations User Contract Job Message Payment Proposal &&
+        sh -c "python manage.py makemigrations &&
                python manage.py migrate &&
                #python manage.py createsuperuser --noinput --username readyadmin --email ferreol@arkanpro.com&&
                #gunicorn readyback.wsgi -c gunicorn.cfg.py&&
