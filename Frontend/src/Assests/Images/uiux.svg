@@ -1,0 +1,21 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="76"
+  height="76"
+  viewBox="-0.186 0.217 76 76"
+><g data-name="CompositeLayer"><path
+      d="M-.186 38.167a38 38 0 1 1 0 .1z"
+      fill="#009100"
+      fill-rule="evenodd"
+      data-name="Oval"
+    /><g data-name="Shape"><path
+        d="M32.315 63.267c-5.8 0-10.5-4.833-10.5-10.792V37.058c0-5.96 4.7-10.791 10.5-10.791h5.999c5.8 0 10.5 4.83 10.5 10.791v15.417c0 5.959-4.7 10.792-10.5 10.792h-6Z"
+        fill="#fff"
+        fill-rule="evenodd"
+        data-name="Shape"
+      /><path
+        d="M48.66 19.267v-3c0-1.657-1.377-3-3.076-3H37.89c-1.699 0-3.076 1.343-3.076 3v6h3.076v-6h7.693v3c0 1.657 1.377 3 3.077 3h6.154v-3H48.66Z"
+        fill="#fff"
+        fill-rule="evenodd"
+        data-name="Path 2"
+      /></g></g></svg>

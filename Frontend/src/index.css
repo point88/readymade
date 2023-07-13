@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  max-width: 1920px;
+  width: 100%;
+  margin: auto;
+}
+
+input[type='radio'] + label span {
+  background: transparent;
+  border: none;
+  box-shadow: 0px 0px 0px 1px #1f9d55 inset;
+}
+
+input[type='radio']:checked + label span {
+  background-color: white;
+  border: none;
+  box-shadow: 0px 0px 0px 5px #1f9d55 inset;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+  opacity: 1;
+}
+
+.customrange {
+  background: linear-gradient(to right, #e6e6e6 0%, #e6e6e6 100%);
+  border-radius: 8px;
+  height: 7px;
+  width: 356px;
+  outline: none;
+  transition: #008c00 450ms ease-in;
+  -webkit-appearance: none;
+}
+div.css-13cymwt-control {
+  border-width: 0;
+  background-color: #F7F5F2;
+}

@@ -1,0 +1,28 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="30.416"
+  height="30.415"
+  viewBox="27.686 27.703 30.416 30.415"
+><g data-name="plus"><g data-name="Path"><path
+        d="M42.894 27.703v30.415"
+        fill="#008d00"
+        fill-rule="evenodd"
+      /><path
+        d="M42.894 27.703v30.415"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        stroke-width="2"
+        stroke="#fff"
+        fill="transparent"
+      /></g><g data-name="Path"><path
+        d="M27.686 42.91h30.415"
+        fill="#008d00"
+        fill-rule="evenodd"
+      /><path
+        d="M27.686 42.91h30.415"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        stroke-width="2"
+        stroke="#fff"
+        fill="transparent"
+      /></g></g></svg>

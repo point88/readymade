@@ -1,0 +1,142 @@
+.package {
+  --package-header-size: 225px;
+
+  width: 100%;
+  position: relative;
+  border-color: #f8d850;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 100px;
+  background: #ffffff;
+  padding: 0 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: calc(var(--package-header-size) / 2);
+}
+
+@media (min-width: 1280px) {
+  .package[data-is-up="true"] {
+    margin-top: calc((var(--package-header-size) / 2) + -119px);
+  }
+}
+
+.packageHeader {
+  width: var(--package-header-size);
+  height: var(--package-header-size);
+  background-color: #333030;
+  border-radius: 50%;
+  margin-top: calc(var(--package-header-size) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.packageTitle {
+  color: #f8d850;
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+.packageDesc {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 22px;
+}
+
+.benefits {
+  margin-bottom: 16px;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.root[dir="ltr"] .benefitIcon {
+  margin-right: 10px;
+}
+
+.root[dir="rtl"] .benefitIcon {
+  margin-left: 10px;
+}
+
+.benefitText {
+  font-size: 19px;
+}
+
+.subscribeBtn {
+  background: #f8d850;
+  border-radius: 20px;
+  text-align: center;
+  color: #009800;
+  padding: 5px 30px;
+  font-size: 21px;
+  font-weight: 700;
+  font-family: Almarai;
+  position: absolute;
+  bottom: -20px;
+}
+
+@media (max-width: 420px) {
+  .packageHeader {
+    --package-header-size: 210px;
+  }
+
+  .packageTitle {
+    font-size: 26px;
+  }
+}
+
+/*
+  because .package class has a broder-radius: 100px;
+  "bottom" value must be adjusted when package's width gets smaller
+  since we can't do this automatically, we'll change "bottom" value manually
+  using media queries
+*/
+@media (max-width: 1480px) {
+  .subscribeBtn {
+    bottom: -15px;
+  }
+}
+
+@media (max-width: 1350px) {
+  .subscribeBtn {
+    bottom: -10px;
+  }
+}
+
+@media (max-width: 1279px) {
+  .subscribeBtn {
+    bottom: -20px;
+  }
+}
+
+@media (max-width: 780px) {
+  .subscribeBtn {
+    bottom: -15px;
+  }
+}
+
+@media (max-width: 680px) {
+  .subscribeBtn {
+    bottom: -20px;
+  }
+}
+
+@media (max-width: 370px) {
+  .subscribeBtn {
+    bottom: -15px;
+  }
+}
+
+@media (max-width: 350px) {
+  .subscribeBtn {
+    bottom: -10px;
+  }
+}

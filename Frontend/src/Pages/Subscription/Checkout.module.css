@@ -1,0 +1,216 @@
+.root {
+  background: #edeff1;
+  border: 0.5px solid #009800;
+  padding: 36px 75px 86px;
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+.grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.box {
+  width: 100%;
+  max-width: 490px;
+}
+
+.paymentMethod {
+  background: #ffffff;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 10px;
+  padding: 16px 26px;
+  border: 0.25px solid transparent;
+}
+
+.paymentMethod[data-active="true"] {
+  border: 0.25px solid #009400;
+}
+
+.paymentMethod:not(:last-child) {
+  margin-bottom: 6px;
+}
+
+.radio {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.headerSubtitle {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.root[dir="ltr"] .headerSubtitle {
+  margin-left: 29px;
+}
+
+.root[dir="rtl"] .headerSubtitle {
+  margin-right: 29px;
+}
+
+.paymentMethodHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.58fr);
+  gap: 20px 15px;
+  margin-top: 26px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabel {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.input {
+  background: #7c95b10d;
+  border: 1px solid #e8e8e8;
+  padding: 11px 15px;
+  outline: 0;
+}
+
+.input:focus {
+  border-color: #333030;
+}
+
+.input::placeholder {
+  color: #b1bbc6;
+}
+
+.showcaseCards {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 15px;
+}
+
+.root[dir="ltr"] .showcaseCard:not(:last-child) {
+  margin-right: 10px;
+}
+
+.root[dir="rtl"] .showcaseCard:not(:last-child) {
+  margin-left: 10px;
+}
+
+.benefits {
+  background: #ffffff;
+  box-shadow: 0px 3px 6px #00000029;
+  border: 0.25px solid #009400;
+  border-radius: 10px;
+  margin-top: 60px;
+}
+
+.benefitsHeader {
+  font-size: 18px;
+  font-weight: 700;
+  padding: 14px 22px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.benefitsBody {
+  padding: 26px 54px 36px;
+}
+
+.benefit {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.benefit:not(:last-child) {
+  margin-bottom: 24px;
+}
+
+.benefitTitle {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.benefitContent {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+@media (max-width: 1279px) {
+  .root {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (max-width: 940px) {
+  .grid {
+    flex-direction: column;
+  }
+
+  .box {
+    max-width: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .root {
+    border: none;
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+}
+
+.benefitImg1 {
+  width: 55px;
+}
+
+.benefitImg2 {
+  width: 60px;
+}
+
+@media (max-width: 500px) {
+  .benefit {
+    gap: 20px;
+    grid-template-columns: 35px 1fr;
+  }
+
+  .benefitsHeader,
+  .benefitTitle {
+    font-size: 16px;
+  }
+
+  .benefitsBody {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+
+  .benefitImg1 {
+    width: 35px;
+  }
+
+  .benefitImg2 {
+    width: 40px;
+  }
+}
+
+@media (max-width: 359px) {
+  .inputs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

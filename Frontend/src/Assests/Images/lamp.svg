@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40.172" height="39.175" viewBox="0 0 40.172 39.175">
+  <g id="idea" transform="translate(-17.972 -18.5)">
+    <g id="idea_1_" transform="translate(25.843 20)">
+      <path id="Path_38" data-name="Path 38" d="M120.475,32.218a12.218,12.218,0,1,0-24.436,0,12.069,12.069,0,0,0,3.815,8.808,6.667,6.667,0,0,1,2.295,5.018v3.89a3.055,3.055,0,0,0,3.055,3.055h6.109a3.055,3.055,0,0,0,3.055-3.055v-3.89a6.665,6.665,0,0,1,2.295-5.018A12.068,12.068,0,0,0,120.475,32.218Z" transform="translate(-96.039 -20)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+      <line id="Line_17" data-name="Line 17" x1="3" transform="translate(6.254 27.175)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+      <line id="Line_18" data-name="Line 18" x1="3" transform="translate(15.254 27.175)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+      <line id="Line_19" data-name="Line 19" y2="3" transform="translate(12.254 33.175)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+      <line id="Line_20" data-name="Line 20" y2="8" transform="translate(12.234 6.588)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+      <line id="Line_21" data-name="Line 21" transform="translate(12.254 20.175)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+    </g>
+    <line id="Line_22" data-name="Line 22" y1="1.619" x2="2.59" transform="translate(20.039 41.625)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+    <line id="Line_23" data-name="Line 23" y1="1.619" x2="2.59" transform="translate(53.486 20.888)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+    <line id="Line_24" data-name="Line 24" x2="2.59" y2="1.619" transform="translate(20.039 20.888)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+    <line id="Line_25" data-name="Line 25" x2="2.59" y2="1.619" transform="translate(53.486 41.625)" fill="none" stroke="#008c00" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="3"/>
+  </g>
+</svg>

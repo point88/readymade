@@ -1,0 +1,31 @@
+.radioLabel {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .radioInput {
+    display: none;
+  }
+  
+  .radioInput + .checkMark {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #009400;
+    cursor: pointer;
+  }
+  
+  .radioInput:checked + .checkMark {
+    border: 6px solid #009400;
+  }
+  
+  .radioLabel[dir="ltr"] .radioInput + .checkMark {
+    margin-right: 8px;
+  }
+  
+  .radioLabel[dir="rtl"] .radioInput + .checkMark {
+    margin-left: 8px;
+  }
+  
